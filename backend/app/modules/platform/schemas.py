@@ -1,0 +1,50 @@
+import re
+import uuid
+from datetime import datetime
+
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+from app.modules.platform.modules import ModuleKey
+
+# 2 digit state code, 10 char PAN, entity number, 'Z', checksum
+GSTIN_RE = re.compile(r"^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$")
+
+
+class BusinessCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=120)
+    name_ta: str | None = Field(default=None, max_length=200)
+    gstin: str | None = None
+    vertical_key: str = Field(min_length=1, max_length=40)
+    enabled_modules: list[ModuleKey] | None = None  # None = the vertical template's defaults
+
+    @field_validator("gstin")
+    @classmethod
+    def _gstin(cls, v: str | None) -> str | None:
+        if v is None or not v.strip():
+            return None
+        v = v.strip().upper()
+        if not GSTIN_RE.match(v):
+            raise ValueError("invalid GSTIN format")
+        return v
+
+
+class BusinessOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    name: str
+    name_ta: str | None
+    gstin: str | None
+    vertical_key: str
+    enabled_modules: list[str]
+    status: str
+    created_at: datetime
+
+
+class WorkspaceContextOut(BaseModel):
+    """What the workspace UI needs after login: which business, which modules, what this user may do."""
+
+    business: BusinessOut
+    role: str
+    location_ids: list[uuid.UUID] | None
+    permissions: list[str]

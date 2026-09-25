@@ -1,0 +1,62 @@
+name: Nightly
+
+on:
+  schedule:
+    - cron: "30 20 * * *"   # 02:00 IST, the quietest hour for the markets
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-24.04
+    environment: production
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      APP_ENV: production
+      SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DATABASE_URL_DIRECT: ${{ secrets.DATABASE_URL_DIRECT }}
+      CORS_ORIGINS: '["https://app.cocreat.in"]'
+      SMS_API_KEY: ${{ secrets.SMS_API_KEY }}
+      SMS_SENDER_ID: ${{ secrets.SMS_SENDER_ID }}
+      SMS_OTP_TEMPLATE_ID: ${{ secrets.SMS_OTP_TEMPLATE_ID }}
+      R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+      R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      R2_BUCKET: ${{ secrets.R2_BUCKET }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --locked --no-dev
+      - run: uv run python -m app.jobs.cleanup
+
+  backup:
+    # Independent logical backup on top of Neon's point-in-time restore. Encrypted with `age` before upload:
+    # only the offline private key (never in GitHub) can read it.
+    runs-on: ubuntu-24.04
+    environment: production
+    steps:
+      - name: Install pg_dump 16 and age
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-client-16 age
+      - name: Dump, encrypt, upload to R2
+        env:
+          BACKUP_DATABASE_URL: ${{ secrets.BACKUP_DATABASE_URL }}   # read-only role with BYPASSRLS
+          BACKUP_AGE_RECIPIENT: ${{ vars.BACKUP_AGE_RECIPIENT }}   # public key: not secret
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_BACKUP_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_BACKUP_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+          R2_ENDPOINT: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+          R2_BACKUP_BUCKET: ${{ vars.R2_BACKUP_BUCKET }}
+        run: |
+          set -euo pipefail
+          name="cocreat-$(date -u +%Y%m%dT%H%M%SZ).dump.age"
+          /usr/lib/postgresql/16/bin/pg_dump --format=custom --no-owner --no-privileges "$BACKUP_DATABASE_URL" \
+            | age -r "$BACKUP_AGE_RECIPIENT" \
+            | aws s3 cp - "s3://$R2_BACKUP_BUCKET/daily/$name" --endpoint-url "$R2_ENDPOINT"
+          echo "uploaded $name"

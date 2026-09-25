@@ -1,0 +1,59 @@
+import uuid
+
+from pydantic import BaseModel, ConfigDict, Field
+
+from app.modules.accounts.permissions import Role
+
+
+class OtpRequestIn(BaseModel):
+    phone: str = Field(min_length=10, max_length=16)
+
+
+class OtpRequestOut(BaseModel):
+    challenge_id: uuid.UUID
+    expires_in_seconds: int
+
+
+class OtpVerifyIn(BaseModel):
+    challenge_id: uuid.UUID
+    code: str = Field(pattern=r"^\d{6}$")
+
+
+class MembershipOut(BaseModel):
+    business_id: uuid.UUID
+    business_name: str
+    business_name_ta: str | None
+    role: Role
+
+
+class MeOut(BaseModel):
+    id: uuid.UUID
+    name: str
+    name_ta: str | None
+    language: str
+    is_platform_admin: bool
+    current_business_id: uuid.UUID | None
+    memberships: list[MembershipOut]
+
+
+class SelectBusinessIn(BaseModel):
+    business_id: uuid.UUID
+
+
+class MemberIn(BaseModel):
+    phone: str = Field(min_length=10, max_length=16)
+    name: str = Field(min_length=1, max_length=120)
+    name_ta: str | None = Field(default=None, max_length=200)
+    role: Role
+    location_ids: list[uuid.UUID] | None = None
+
+
+class MemberOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    user_id: uuid.UUID
+    business_id: uuid.UUID
+    role: Role
+    location_ids: list[uuid.UUID] | None
+    is_active: bool

@@ -1,0 +1,4 @@
+@import "tailwindcss";
+
+/* Market phones: large type and touch targets by default */
+html { font-size: 17px; }

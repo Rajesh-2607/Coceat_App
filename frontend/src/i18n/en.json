@@ -1,0 +1,46 @@
+{
+  "app": { "name": "Cocreat" },
+  "common": { "save": "Save", "cancel": "Cancel", "loading": "Loading…", "retry": "Try again", "logout": "Log out" },
+  "login": {
+    "title": "Log in",
+    "phone": "Mobile number",
+    "sendOtp": "Send OTP",
+    "otp": "6-digit OTP",
+    "sentTo": "OTP sent to {{phone}}",
+    "verify": "Log in",
+    "changeNumber": "Change number"
+  },
+  "business": { "choose": "Choose business", "none": "You are not part of any business yet. Contact Cocreat support." },
+  "nav": {
+    "home": "Home", "sell": "Sell", "stock": "Stock", "money": "Money", "buy": "Buy / Receive", "bills": "Bills",
+    "customers": "Customers", "suppliers": "Suppliers", "wastage": "Wastage", "reports": "Reports",
+    "staff": "Staff", "audit": "Who did what", "settings": "Settings"
+  },
+  "home": { "welcome": "Welcome, {{name}}", "comingSoon": "This section is coming soon." },
+  "locations": {
+    "title": "Locations",
+    "add": "Add location",
+    "name": "Name",
+    "nameTa": "Name (Tamil)",
+    "kind": "Type",
+    "kinds": { "shop": "Shop", "godown": "Godown", "cold_storage": "Cold storage", "other": "Other" },
+    "empty": "No locations yet."
+  },
+  "language": { "switch": "தமிழ்" },
+  "errors": {
+    "unknown": "Something went wrong. Please try again.",
+    "validation": "Please check the details entered.",
+    "invalid_phone": "Enter a valid 10-digit mobile number.",
+    "otp_invalid": "Wrong or expired OTP.",
+    "otp_locked": "Too many wrong attempts. Request a new OTP.",
+    "otp_rate_limited": "Too many OTP requests. Please wait a few minutes.",
+    "not_a_member": "You are not a member of this business.",
+    "no_current_business": "Choose a business first.",
+    "permission_denied": "You don't have permission to do this.",
+    "module_disabled": "This section is not enabled for your business.",
+    "location_name_taken": "A location with this name already exists.",
+    "unauthorized": "Please log in again.",
+    "not_found": "Not found.",
+    "csrf_origin": "Request blocked for security. Reload the app."
+  }
+}

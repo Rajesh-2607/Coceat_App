@@ -1,0 +1,28 @@
+# secrets: never commit
+.env
+.env.*
+!.env.example
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# node
+node_modules/
+dist/
+*.tsbuildinfo
+playwright-report/
+test-results/
+
+# editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+dev-dist/
