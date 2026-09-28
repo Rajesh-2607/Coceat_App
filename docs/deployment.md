@@ -90,3 +90,16 @@ psycopg's async mode cannot use Windows' default Proactor event loop. Run the de
 `--reload` (uvicorn then uses the selector loop):
 `uv run uvicorn app.main:app --reload`. Tests handle this automatically. Production runs on Linux
 and is unaffected.
+
+If Windows Application Control blocks psycopg's bundled `libpq` DLL (the API then fails at import with
+"no pq wrapper available"), run the API, Postgres and the backend tests in Linux containers instead. The
+backend `Dockerfile` builds the API; for tests set `TEST_PG_ADMIN_URL` to a throwaway Postgres 16 superuser URL
+and run `uv run pytest` inside a `python:3.12` container. The frontend (`npm run dev`) runs on Windows as usual.
+
+## PDF bills
+
+Bills are turned into PDFs by WeasyPrint, which needs Pango and a Tamil-capable font on the server. The API
+`Dockerfile` installs `libpango-1.0-0`, `libpangoft2-1.0-0`, `libharfbuzz-subset0`, `fontconfig` and
+`fonts-noto-core` (Noto Sans Tamil); CI installs the same packages before running the tests. PDFs are rendered
+on demand in a worker thread and are not stored: bills are immutable, so a stored copy is only a speed-up. Add
+R2 caching later if PDF traffic becomes heavy.

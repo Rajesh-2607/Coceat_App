@@ -7,8 +7,12 @@ and tomato wholesalers. One platform, many businesses. Each business gets its ow
 - **Business Workspace** (`/w`): traders handle sales, stock, money, bills, customers and more, in Tamil or English,
   as an installable PWA on the phones they already use.
 
-> Status: the foundation is in place (tenancy, OTP login, audit trail, idempotent writes, locations,
-> deployment pipeline). Sales, stock movements, ledgers and PDF bills come next.
+> Status: v1 feature set is in place: tenancy, OTP login, audit trail, idempotent writes, admin console, staff,
+> catalog, customers and suppliers, stock (receive, adjust, transfer, wastage), crate ledger, **sell and GST bills**
+> (Tax Invoice / Bill of Supply, returns, cancellations), **buy / receive**, **money** (payments, day book),
+> **reports** (sales, GST, who owes, wastage) and **PDF bills** (A4 and 80 mm thermal, English and Tamil).
+> Still to do before real use: verify bill numbering and GST rules with your accountant, real SMS (MSG91), R2 storage,
+> Playwright end-to-end tests and load testing. See [docs/architecture.md](docs/architecture.md#8-decisions-that-still-need-you).
 
 ## Stack
 
@@ -63,6 +67,18 @@ cp .env.example .env            # VITE_API_URL=http://localhost:8000
 npm install
 npm run dev                     # http://localhost:5173
 ```
+
+### Demo data
+
+With the API running locally (`OTP_DEV_MODE=true`) and a platform admin already in the database:
+
+```bash
+cd backend
+uv run python scripts/seed_demo.py --api http://localhost:8000 --admin-phone <admin number>
+```
+
+This creates two demo businesses (banana and tomato traders) through the real endpoints. Log in with owner
+`9000000011` or `9000000021`; the dev OTP is `123456`. It refuses to run against a non-local API.
 
 ## Checks
 

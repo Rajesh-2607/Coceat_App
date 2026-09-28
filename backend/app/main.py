@@ -20,8 +20,17 @@ from app.core.middleware import CsrfOriginMiddleware, RequestContextMiddleware
 from app.modules.accounts.router import admin_router as accounts_admin_router
 from app.modules.accounts.router import router as accounts_router
 from app.modules.audit.router import router as audit_router
+from app.modules.catalog.router import router as catalog_router
 from app.modules.inventory.router import router as inventory_router
+from app.modules.inventory.router import stock_router
+from app.modules.ledger.router import money_router
+from app.modules.ledger.router import router as ledger_router
+from app.modules.parties.router import customers_router, suppliers_router
 from app.modules.platform.router import router as platform_router
+from app.modules.purchases.router import router as purchases_router
+from app.modules.reports.router import router as reports_router
+from app.modules.sales.router import router as sales_router
+from app.modules.staff.router import router as staff_router
 
 log = logging.getLogger(__name__)
 
@@ -90,7 +99,23 @@ def create_app() -> FastAPI:
         return JSONResponse({"status": "ok"})
 
     api = APIRouter(prefix="/api")
-    for router in (accounts_router, accounts_admin_router, platform_router, inventory_router, audit_router):
+    for router in (
+        accounts_router,
+        accounts_admin_router,
+        platform_router,
+        inventory_router,
+        stock_router,
+        catalog_router,
+        customers_router,
+        suppliers_router,
+        ledger_router,
+        money_router,
+        sales_router,
+        purchases_router,
+        staff_router,
+        reports_router,
+        audit_router,
+    ):
         api.include_router(router)
     app.include_router(api)
 

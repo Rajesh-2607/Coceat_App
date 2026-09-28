@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Any
 
 from sqlalchemy import CheckConstraint, ForeignKey, String
@@ -30,6 +31,10 @@ class Business(IdMixin, TimestampMixin, Base):
     name: Mapped[str] = mapped_column(String(120))
     name_ta: Mapped[str | None] = mapped_column(String(200))
     gstin: Mapped[str | None] = mapped_column(String(15))
+    address: Mapped[str | None] = mapped_column(String(300))  # printed on bills
+    phone: Mapped[str | None] = mapped_column(String(16))
     vertical_key: Mapped[str] = mapped_column(ForeignKey("vertical_templates.key"))
     enabled_modules: Mapped[list[str]] = mapped_column(default=list)
     status: Mapped[str] = mapped_column(String(20), default="active")
+    # null = still in the setup queue; set once the platform team has finished onboarding this business
+    setup_completed_at: Mapped[datetime | None]

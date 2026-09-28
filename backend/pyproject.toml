@@ -13,6 +13,7 @@ dependencies = [
     "alembic>=1.13",
     "httpx>=0.27",
     "sentry-sdk[fastapi]>=2.10",
+    "weasyprint>=62",
 ]
 
 [dependency-groups]
@@ -45,6 +46,10 @@ ignore = ["S101", "B008", "N818"]  # N818: HTTP-style error names (NotFound) rea
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S105", "S106", "S608"]
 "alembic/**" = ["N999", "E501", "S608"]  # role name is validated in Settings
+
+[[tool.mypy.overrides]]
+module = ["weasyprint", "weasyprint.*"]
+ignore_missing_imports = true
 
 [tool.mypy]
 python_version = "3.12"

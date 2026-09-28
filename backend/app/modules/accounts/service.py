@@ -8,13 +8,13 @@ import uuid
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 
-from sqlalchemy import func, select
+from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.context import Actor, Ctx, PlatformCtx, RequestMeta, Tenant
 from app.core.db import set_tenant
-from app.core.errors import Forbidden, TooManyRequests, Unauthorized, Unprocessable
+from app.core.errors import Forbidden, NotFound, TooManyRequests, Unauthorized, Unprocessable
 from app.core.security import (
     hash_ip,
     hash_otp,
@@ -26,9 +26,20 @@ from app.core.security import (
 )
 from app.modules.accounts.models import Membership, OtpChallenge, User, UserSession
 from app.modules.accounts.permissions import Perm, Role, role_has
-from app.modules.accounts.schemas import MemberIn, MemberOut, MembershipOut, MeOut
+from app.modules.accounts.schemas import (
+    MemberIn,
+    MemberOut,
+    MembershipOut,
+    MeOut,
+    PlatformMembershipOut,
+    PlatformUserOut,
+    PlatformUserUpdate,
+    StaffOut,
+    StaffUpdate,
+)
 from app.modules.audit import service as audit
 from app.modules.platform import service as platform
+from app.modules.platform.models import Business
 from app.modules.platform.modules import ModuleKey
 
 OTP_TTL = timedelta(minutes=5)
@@ -261,29 +272,130 @@ def permissions_of(role: str) -> list[str]:
     return sorted(p.value for p in Perm if role_has(role, p))
 
 
-# --- membership management (platform admin) -------------------------------------------------------------
+# --- membership management -------------------------------------------------------------------------------
+# Memberships are platform rows (not RLS-protected): every query below filters on business_id explicitly.
 
 
-async def add_member(ctx: PlatformCtx, business_id: uuid.UUID, data: MemberIn) -> MemberOut:
+def _staff_out(m: Membership, u: User) -> StaffOut:
+    return StaffOut(
+        membership_id=m.id,
+        user_id=u.id,
+        name=u.name,
+        name_ta=u.name_ta,
+        phone=u.phone,
+        role=Role(m.role),
+        location_ids=m.location_ids,
+        is_active=m.is_active,
+    )
+
+
+async def list_staff(db: AsyncSession, business_id: uuid.UUID) -> list[StaffOut]:
+    rows = await db.execute(
+        select(Membership, User)
+        .join(User, User.id == Membership.user_id)
+        .where(Membership.business_id == business_id)
+        .order_by(Membership.created_at)
+    )
+    return [_staff_out(m, u) for m, u in rows]
+
+
+async def _staff_row(db: AsyncSession, business_id: uuid.UUID, membership_id: uuid.UUID) -> tuple[Membership, User]:
+    row = (
+        await db.execute(
+            select(Membership, User)
+            .join(User, User.id == Membership.user_id)
+            .where(Membership.id == membership_id, Membership.business_id == business_id)
+        )
+    ).first()
+    if row is None:
+        raise NotFound("Staff member not found")
+    return row[0], row[1]
+
+
+async def upsert_staff(db: AsyncSession, business_id: uuid.UUID, data: MemberIn) -> tuple[StaffOut | None, StaffOut]:
+    """Add (or re-activate and update) a member of a business, creating the user by phone if needed."""
     phone = _phone_or_422(data.phone)
-    await platform.get_business(ctx.db, business_id)  # 404 if missing
-    user = await ctx.db.scalar(select(User).where(User.phone == phone))
+    user = await db.scalar(select(User).where(User.phone == phone))
     if user is None:
         user = User(phone=phone, name=data.name, name_ta=data.name_ta)
-        ctx.db.add(user)
-        await ctx.db.flush()
-    membership = await ctx.db.scalar(
+        db.add(user)
+        await db.flush()
+    membership = await db.scalar(
         select(Membership).where(Membership.user_id == user.id, Membership.business_id == business_id)
     )
-    before = MemberOut.model_validate(membership) if membership else None
+    before = _staff_out(membership, user) if membership else None
     if membership is None:
         membership = Membership(user_id=user.id, business_id=business_id, role=data.role.value)
-        ctx.db.add(membership)
+        db.add(membership)
+    elif membership.role == Role.OWNER.value and membership.is_active and data.role != Role.OWNER:
+        await _ensure_another_owner(db, business_id, membership.id)
     membership.role = data.role.value
     membership.location_ids = data.location_ids
     membership.is_active = True
-    await ctx.db.flush()
-    out = MemberOut.model_validate(membership)
+    await db.flush()
+    await db.refresh(membership)
+    return before, _staff_out(membership, user)
+
+
+async def _ensure_another_owner(db: AsyncSession, business_id: uuid.UUID, membership_id: uuid.UUID) -> None:
+    """A business must always keep one active owner (else nobody can manage staff)."""
+    other = await db.scalar(
+        select(func.count())
+        .select_from(Membership)
+        .where(
+            Membership.business_id == business_id,
+            Membership.role == Role.OWNER.value,
+            Membership.is_active.is_(True),
+            Membership.id != membership_id,
+        )
+    )
+    if not other:
+        raise Unprocessable("A business needs at least one active owner", code="last_owner")
+
+
+async def update_staff(
+    db: AsyncSession,
+    business_id: uuid.UUID,
+    membership_id: uuid.UUID,
+    data: StaffUpdate,
+    *,
+    forbid_user_id: uuid.UUID | None = None,
+) -> tuple[StaffOut, StaffOut]:
+    membership, user = await _staff_row(db, business_id, membership_id)
+    if forbid_user_id is not None and membership.user_id == forbid_user_id:
+        raise Unprocessable("You cannot change your own access", code="cannot_edit_self")
+    before = _staff_out(membership, user)
+    changes = data.model_fields_set
+    new_role = data.role.value if "role" in changes and data.role is not None else membership.role
+    new_active = data.is_active if "is_active" in changes and data.is_active is not None else membership.is_active
+    loses_owner = (
+        membership.role == Role.OWNER.value
+        and membership.is_active
+        and (new_role != Role.OWNER.value or not new_active)
+    )
+    if loses_owner:
+        await _ensure_another_owner(db, business_id, membership.id)
+    membership.role = new_role
+    membership.is_active = new_active
+    if "location_ids" in changes:
+        membership.location_ids = data.location_ids  # None = all locations
+    await db.flush()
+    await db.refresh(membership)
+    return before, _staff_out(membership, user)
+
+
+async def add_member(ctx: PlatformCtx, business_id: uuid.UUID, data: MemberIn) -> MemberOut:
+    """Platform admin: add a member to any business."""
+    await platform.get_business(ctx.db, business_id)  # 404 if missing
+    before, after = await upsert_staff(ctx.db, business_id, data)
+    out = MemberOut(
+        id=after.membership_id,
+        user_id=after.user_id,
+        business_id=business_id,
+        role=after.role,
+        location_ids=after.location_ids,
+        is_active=after.is_active,
+    )
     await set_tenant(ctx.db, business_id)
     await audit.record_event(
         ctx.db,
@@ -292,7 +404,106 @@ async def add_member(ctx: PlatformCtx, business_id: uuid.UUID, data: MemberIn) -
         actor_user_id=ctx.actor.user_id,
         business_id=business_id,
         entity_type="membership",
-        entity_id=membership.id,
+        entity_id=after.membership_id,
+        before=audit.snapshot(before),
+        after=audit.snapshot(after),
+    )
+    return out
+
+
+async def admin_update_staff(
+    ctx: PlatformCtx, business_id: uuid.UUID, membership_id: uuid.UUID, data: StaffUpdate
+) -> StaffOut:
+    await platform.get_business(ctx.db, business_id)
+    before, after = await update_staff(ctx.db, business_id, membership_id, data)
+    await set_tenant(ctx.db, business_id)
+    await audit.record_event(
+        ctx.db,
+        meta=ctx.meta,
+        action="member.update",
+        actor_user_id=ctx.actor.user_id,
+        business_id=business_id,
+        entity_type="membership",
+        entity_id=membership_id,
+        before=audit.snapshot(before),
+        after=audit.snapshot(after),
+    )
+    return after
+
+
+async def user_names(db: AsyncSession, user_ids: set[uuid.UUID]) -> dict[uuid.UUID, str]:
+    """Display names for audit / history views."""
+    if not user_ids:
+        return {}
+    rows = await db.execute(select(User.id, User.name).where(User.id.in_(user_ids)))
+    return {uid: name for uid, name in rows}
+
+
+# --- platform users (cross-business, for /admin) ----------------------------------------------------------
+
+
+async def _platform_users_out(db: AsyncSession, users: list[User]) -> list[PlatformUserOut]:
+    ids = [u.id for u in users]
+    by_user: dict[uuid.UUID, list[PlatformMembershipOut]] = {i: [] for i in ids}
+    if ids:
+        rows = (
+            await db.execute(
+                select(Membership, Business.name)
+                .join(Business, Business.id == Membership.business_id)
+                .where(Membership.user_id.in_(ids))
+                .order_by(Business.name)
+            )
+        ).all()
+        for m, business_name in rows:
+            by_user[m.user_id].append(
+                PlatformMembershipOut(business_id=m.business_id, business_name=business_name, role=Role(m.role), is_active=m.is_active)
+            )
+    return [PlatformUserOut.model_validate({**u.__dict__, "memberships": by_user[u.id]}) for u in users]
+
+
+async def list_platform_users(ctx: PlatformCtx, *, q: str | None, limit: int = 200) -> list[PlatformUserOut]:
+    stmt = select(User).order_by(User.created_at.desc()).limit(limit)
+    if q:
+        like = f"%{q.strip()}%"
+        stmt = stmt.where(or_(User.name.ilike(like), User.phone.ilike(like)))
+    return await _platform_users_out(ctx.db, list(await ctx.db.scalars(stmt)))
+
+
+async def update_platform_user(ctx: PlatformCtx, user_id: uuid.UUID, data: PlatformUserUpdate) -> PlatformUserOut:
+    user = await ctx.db.get(User, user_id)
+    if user is None:
+        raise NotFound("User not found")
+    if user.id == ctx.actor.user_id and data.model_fields_set & {"is_active", "is_platform_admin"}:
+        raise Unprocessable("You cannot change your own account here", code="cannot_edit_self")
+    changes = data.model_fields_set
+    loses_admin = user.is_platform_admin and (
+        ("is_platform_admin" in changes and data.is_platform_admin is False)
+        or ("is_active" in changes and data.is_active is False)
+    )
+    if loses_admin:
+        other = await ctx.db.scalar(
+            select(func.count())
+            .select_from(User)
+            .where(User.is_platform_admin.is_(True), User.is_active.is_(True), User.id != user.id)
+        )
+        if not other:
+            raise Unprocessable("The platform needs at least one active admin", code="last_platform_admin")
+    before = (await _platform_users_out(ctx.db, [user]))[0]
+    if "is_active" in changes and data.is_active is not None:
+        user.is_active = data.is_active
+    if "is_platform_admin" in changes and data.is_platform_admin is not None:
+        user.is_platform_admin = data.is_platform_admin
+    await ctx.db.flush()
+    await ctx.db.refresh(user)
+    out = (await _platform_users_out(ctx.db, [user]))[0]
+    await audit.record_event(
+        ctx.db,
+        meta=ctx.meta,
+        action="platform_user.update",
+        actor_user_id=ctx.actor.user_id,
+        business_id=None,
+        entity_type="user",
+        entity_id=user.id,
         before=audit.snapshot(before),
         after=audit.snapshot(out),
     )

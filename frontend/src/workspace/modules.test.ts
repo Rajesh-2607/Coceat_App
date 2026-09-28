@@ -7,6 +7,13 @@ describe("visibleModules", () => {
   it("shows only enabled modules, in a stable order", () => {
     expect(visibleModules(["money", "sell", "unknown"])).toEqual(["sell", "money"]);
   });
+
+  it("hides modules the member's role cannot open", () => {
+    const enabled = ["sell", "staff", "audit", "stock", "money"];
+    expect(visibleModules(enabled, ["stock.view"])).toEqual(["stock"]);
+    expect(visibleModules(enabled, ["stock.view", "bills.create", "money.view"])).toEqual(["sell", "stock", "money"]);
+    expect(visibleModules(enabled, ["stock.view", "staff.view", "audit.view"])).toEqual(["stock", "staff", "audit"]);
+  });
 });
 
 function keys(obj: object, prefix = ""): string[] {

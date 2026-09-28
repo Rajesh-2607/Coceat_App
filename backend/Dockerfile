@@ -10,7 +10,11 @@ COPY . .
 
 # ---- runtime: no compilers, no uv, non-root ----
 FROM python:3.12-slim-bookworm
-RUN useradd --create-home --uid 10001 app
+# WeasyPrint (PDF bills) needs Pango; fonts-noto-core has Noto Sans Tamil for Tamil bills
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b libharfbuzz-subset0 fontconfig fonts-noto-core \
+ && rm -rf /var/lib/apt/lists/* \
+ && useradd --create-home --uid 10001 app
 WORKDIR /app
 COPY --from=build --chown=app:app /app /app
 ENV PATH="/app/.venv/bin:$PATH" PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1

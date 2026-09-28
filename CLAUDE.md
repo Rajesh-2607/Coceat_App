@@ -19,79 +19,11 @@ Two apps, one frontend codebase:
 v1 scope: billing with GST-compliant bills (Tax Invoice or Bill of Supply), stock by location, crates/units, credit
 ledgers. Out of v1: buyer portal, full offline mode, WhatsApp API, online payment collection.
 
-## Tech stack
+## Stack notes
 
-| Layer | Choice |
-| --- | --- |
-| Backend | Python 3.12, FastAPI, Pydantic v2 |
-| ORM / migrations | SQLAlchemy 2.0 (typed `Mapped[]` style), Alembic |
-| Database | PostgreSQL 16 on Neon (row-level security enabled) |
-| Settings | `pydantic-settings`, loading from `.env` |
-| Internal admin | React `/admin` on audited `/api/admin` endpoints (SQLAdmin not used: it bypasses services and audit) |
-| PDFs | WeasyPrint (A4 + 80 mm thermal, Tamil fonts) |
-| Frontend | React 18 + TypeScript + Vite, Tailwind, shadcn/ui, TanStack Query, react-i18next |
-| API client | Generated from FastAPI's OpenAPI schema; never hand-written |
-| Mobile | Installable PWA from the same frontend |
-| Storage | Cloudflare R2 (S3-compatible) |
-| Hosting | Render (API), Cloudflare Pages (frontend), Neon (DB), GitHub Actions (CI, nightly jobs, backups) |
-| Tests | pytest + httpx, Playwright for key flows |
-
-## Repository layout
-
-```
-backend/
-  app/
-    main.py              # FastAPI app factory, router registration
-    core/
-      config.py          # Settings class (pydantic-settings); the ONLY place env vars are read
-      db.py              # engine, session, tenant session events, RLS setup
-      security.py        # OTP, sessions, password/PIN hashing
-      deps.py            # FastAPI dependencies: get_db, get_current_user, get_current_business
-    modules/
-      platform/          # businesses, plans, subscriptions, vertical templates
-      accounts/          # users, OTP login, memberships, roles
-      catalog/           # units, products, varieties, grades
-      parties/           # customers + suppliers
-      inventory/         # locations, stock movements, balances, transfers, wastage
-      sales/             # sale bills, bill numbering, returns, cancellations
-      purchases/         # purchase entries
-      ledger/            # payments, party ledger, crate ledger
-      reports/
-      audit/             # "Who did what"
-    # each module: models.py, schemas.py, service.py, router.py
-  alembic/
-  tests/
-  .env.example
-frontend/
-  src/
-    admin/               # /admin routes
-    workspace/           # /w routes
-    api/                 # generated client — do not edit by hand
-    i18n/                # en.json, ta.json
-  .env.example
-.github/workflows/
-```
-
-## Commands
-
-```bash
-# Backend (from backend/)
-uv sync                                   # install deps
-uv run uvicorn app.main:app --reload      # dev server on :8000
-uv run pytest                             # all tests
-uv run pytest -k tenant                   # tenant-isolation tests only
-uv run ruff check . && uv run ruff format .
-uv run mypy app
-uv run alembic revision --autogenerate -m "short description"
-uv run alembic upgrade head
-
-# Frontend (from frontend/)
-npm install
-npm run dev                               # Vite on :5173
-npm run gen:api                           # regenerate API client from backend OpenAPI
-npm run lint && npm run typecheck
-npm run test
-```
+- Internal admin is React `/admin` on audited `/api/admin` endpoints. SQLAdmin is not used: it bypasses services and audit.
+- The API client in `frontend/src/api/` is generated from FastAPI's OpenAPI schema (`npm run gen:api`); never hand-write or edit it.
+- Each backend module under `app/modules/` has `models.py`, `schemas.py`, `service.py`, `router.py`.
 
 Run the tests, lint and type checks before saying a task is done.
 
@@ -113,24 +45,7 @@ The real class is `backend/app/core/config.py` (read it rather than trusting a c
 `get_settings()` is cached and is the only accessor; a validator refuses `OTP_DEV_MODE`, a short
 `SESSION_SECRET` and `http://` CORS origins when `APP_ENV=production`.
 
-### Files
-
-| File | Committed? | Purpose |
-| --- | --- | --- |
-| `backend/.env.example` | Yes | Every variable name with a dummy value and a comment. Keep it in sync with `Settings` |
-| `backend/.env` | **Never** | Real local values. Each developer creates their own from `.env.example` |
-| `frontend/.env.example` | Yes | Public frontend config names |
-| `frontend/.env` | **Never** | Local frontend values |
-
-The `.env.example` files are the source of truth for variable names and placeholder values.
-
-`.gitignore` must contain:
-
-```gitignore
-.env
-.env.*
-!.env.example
-```
+The `.env.example` files are the source of truth for variable names and placeholder values; keep `backend/.env.example` in sync with `Settings`. Real `.env` files are never committed.
 
 ### Rules for Claude
 
