@@ -102,10 +102,26 @@ const TONE_PILL: Record<Tone, string> = {
   brand: "bg-violet-50 text-violet-700",
 };
 
-export function StatTile({ label, value, hint, tone = "neutral" }: { label: string; value: ReactNode; hint?: string; tone?: Tone }) {
+export function StatTile({
+  label,
+  value,
+  hint,
+  tone = "neutral",
+  pill,
+}: {
+  label: string;
+  value: ReactNode;
+  hint?: string;
+  tone?: Tone;
+  /** A small tinted corner badge (e.g. "Live" / "Watch" / "Alert") — the admin console's stat-tile style. */
+  pill?: { label: string; tone: Tone };
+}) {
   return (
     <Card>
-      <p className="text-sm font-medium uppercase tracking-wide text-slate-500">{label}</p>
+      <div className="flex items-start justify-between gap-2">
+        <p className="text-sm font-medium uppercase tracking-wide text-slate-500">{label}</p>
+        {pill && <Badge tone={pill.tone}>{pill.label}</Badge>}
+      </div>
       <p className={`mt-1 text-3xl font-bold ${TONE_TEXT[tone]}`}>{value}</p>
       {hint && <p className="text-sm text-slate-500">{hint}</p>}
     </Card>

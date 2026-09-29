@@ -31,6 +31,10 @@ export const queryKeys = {
   audit: ["w", "audit"] as const,
   adminBusinesses: ["admin", "businesses"] as const,
   adminVerticals: ["admin", "verticals"] as const,
+  adminUsers: ["admin", "users"] as const,
+  adminPlans: ["admin", "plans"] as const,
+  adminSubscriptions: ["admin", "subscriptions"] as const,
+  adminSettings: ["admin", "settings"] as const,
 };
 
 /**
@@ -484,6 +488,16 @@ export function useAdminVerticals() {
   });
 }
 
+export function useAdminBusinessLocations(businessId: string) {
+  return useQuery({
+    queryKey: ["admin", "locations", businessId],
+    queryFn: async () =>
+      unwrap(
+        await api.GET("/api/admin/businesses/{business_id}/locations", { params: { path: { business_id: businessId } } }),
+      ),
+  });
+}
+
 export function useAdminMembers(businessId: string) {
   return useQuery({
     queryKey: ["admin", "members", businessId],
@@ -530,6 +544,52 @@ export function useAdminUpdateMember(businessId: string) {
         }),
       ),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "members", businessId] }),
+  });
+}
+
+export function useAdminCreateVertical() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (body: Schemas["VerticalCreate"]) => unwrap(await api.POST("/api/admin/verticals", { body })),
+    onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.adminVerticals }),
+  });
+}
+
+export function useAdminUpdateVertical(key: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (body: Schemas["VerticalUpdate"]) =>
+      unwrap(await api.PATCH("/api/admin/verticals/{key}", { body, params: { path: { key } } })),
+    onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.adminVerticals }),
+  });
+}
+
+export function useAdminCompleteSetup() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (businessId: string) =>
+      unwrap(
+        await api.POST("/api/admin/businesses/{business_id}/complete-setup", {
+          params: { path: { business_id: businessId } },
+        }),
+      ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.adminBusinesses }),
+  });
+}
+
+export function useAdminUsers(q: string) {
+  return useQuery({
+    queryKey: [...queryKeys.adminUsers, q],
+    queryFn: async () => unwrap(await api.GET("/api/admin/users", { params: { query: { q: q || undefined } } })),
+  });
+}
+
+export function useAdminUpdateUser() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ userId, changes }: { userId: string; changes: Schemas["PlatformUserUpdate"] }) =>
+      unwrap(await api.PATCH("/api/admin/users/{user_id}", { body: changes, params: { path: { user_id: userId } } })),
+    onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.adminUsers }),
   });
 }
 
@@ -700,5 +760,89 @@ export function useWastageReport(from: string, to: string) {
   return useQuery({
     queryKey: [...queryKeys.reports, "wastage", from, to],
     queryFn: async () => unwrap(await api.GET("/api/w/reports/wastage", { params: { query: { from, to } } })),
+  });
+}
+
+/* ---- subscriptions ------------------------------------------------------------------------------------ */
+
+export function useAdminPlans(includeInactive = true) {
+  return useQuery({
+    queryKey: [...queryKeys.adminPlans, includeInactive],
+    queryFn: async () => unwrap(await api.GET("/api/admin/plans", { params: { query: { include_inactive: includeInactive } } })),
+  });
+}
+
+export function useAdminCreatePlan() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (body: Schemas["PlanCreate"]) => unwrap(await api.POST("/api/admin/plans", { body })),
+    onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.adminPlans }),
+  });
+}
+
+export function useAdminUpdatePlan(key: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (body: Schemas["PlanUpdate"]) =>
+      unwrap(await api.PATCH("/api/admin/plans/{key}", { body, params: { path: { key } } })),
+    onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.adminPlans }),
+  });
+}
+
+export type SubscriptionStatus = Schemas["SubscriptionOut"]["status"];
+
+export function useAdminSubscriptions(status?: SubscriptionStatus) {
+  return useQuery({
+    queryKey: [...queryKeys.adminSubscriptions, "list", status ?? "all"],
+    queryFn: async () => unwrap(await api.GET("/api/admin/subscriptions", { params: { query: { status } } })),
+  });
+}
+
+export function useAdminSubscriptionStats() {
+  return useQuery({
+    queryKey: [...queryKeys.adminSubscriptions, "stats"],
+    queryFn: async () => unwrap(await api.GET("/api/admin/subscriptions/stats")),
+  });
+}
+
+export function useAdminSubscription(businessId: string) {
+  return useQuery({
+    queryKey: [...queryKeys.adminSubscriptions, "business", businessId],
+    queryFn: async () =>
+      unwrap(await api.GET("/api/admin/businesses/{business_id}/subscription", { params: { path: { business_id: businessId } } })),
+  });
+}
+
+export function useAdminUpdateSubscription(businessId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (body: Schemas["SubscriptionUpdate"]) =>
+      unwrap(
+        await api.PATCH("/api/admin/businesses/{business_id}/subscription", {
+          body,
+          params: { path: { business_id: businessId } },
+        }),
+      ),
+    onSuccess: () => {
+      void qc.invalidateQueries({ queryKey: queryKeys.adminSubscriptions });
+    },
+  });
+}
+
+/* ---- platform settings ---------------------------------------------------------------------------------- */
+
+export function useAdminPlatformSettings() {
+  return useQuery({
+    queryKey: queryKeys.adminSettings,
+    queryFn: async () => unwrap(await api.GET("/api/admin/settings")),
+  });
+}
+
+export function useAdminUpdatePlatformSettings() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (body: Schemas["PlatformSettingsUpdate"]) =>
+      unwrap(await api.PATCH("/api/admin/settings", { body })),
+    onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.adminSettings }),
   });
 }

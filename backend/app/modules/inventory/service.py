@@ -4,8 +4,10 @@ from typing import Any
 
 from sqlalchemy import func, select, text
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.context import Ctx
+from app.core.db import set_tenant
 from app.core.errors import Conflict, NotFound, Unprocessable
 from app.core.ids import uuid7
 from app.modules.accounts.permissions import Perm
@@ -42,6 +44,29 @@ async def _get(ctx: Ctx, location_id: uuid.UUID) -> Location:
 async def require_location(ctx: Ctx, location_id: uuid.UUID) -> Location:
     """For other modules: the location exists in this business and the member may act on it (else 404)."""
     return await _get(ctx, location_id)
+
+
+async def list_locations_for_admin(db: AsyncSession, business_id: uuid.UUID) -> list[LocationOut]:
+    """For the admin console: read-only, cross-tenant by way of set_tenant (no ctx.can_access_location check —
+    a platform admin can see every location, this is not a member's own workspace view)."""
+    await set_tenant(db, business_id)
+    rows = await db.scalars(select(Location).where(Location.is_active.is_(True)).order_by(Location.name))
+    out = [LocationOut.model_validate(r) for r in rows]
+    await set_tenant(db, None)
+    return out
+
+
+async def location_counts_by_business(db: AsyncSession, business_ids: list[uuid.UUID]) -> dict[uuid.UUID, int]:
+    """For the admin console: active location count per business. Locations are RLS-protected, so this can
+    only be answered one business at a time (there is no cross-tenant bypass) — fine at admin-list scale."""
+    counts: dict[uuid.UUID, int] = {}
+    for business_id in business_ids:
+        await set_tenant(db, business_id)
+        counts[business_id] = (
+            await db.scalar(select(func.count()).select_from(Location).where(Location.is_active.is_(True)))
+        ) or 0
+    await set_tenant(db, None)
+    return counts
 
 
 async def list_locations(ctx: Ctx) -> list[LocationOut]:

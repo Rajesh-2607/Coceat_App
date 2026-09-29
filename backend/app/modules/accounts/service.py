@@ -431,6 +431,18 @@ async def admin_update_staff(
     return after
 
 
+async def member_counts_by_business(db: AsyncSession, business_ids: list[uuid.UUID]) -> dict[uuid.UUID, int]:
+    """For the admin console: active membership count per business. Memberships are a platform table (no RLS)."""
+    if not business_ids:
+        return {}
+    rows = await db.execute(
+        select(Membership.business_id, func.count())
+        .where(Membership.business_id.in_(business_ids), Membership.is_active.is_(True))
+        .group_by(Membership.business_id)
+    )
+    return dict(rows.all())
+
+
 async def user_names(db: AsyncSession, user_ids: set[uuid.UUID]) -> dict[uuid.UUID, str]:
     """Display names for audit / history views."""
     if not user_ids:
@@ -456,7 +468,9 @@ async def _platform_users_out(db: AsyncSession, users: list[User]) -> list[Platf
         ).all()
         for m, business_name in rows:
             by_user[m.user_id].append(
-                PlatformMembershipOut(business_id=m.business_id, business_name=business_name, role=Role(m.role), is_active=m.is_active)
+                PlatformMembershipOut(
+                    business_id=m.business_id, business_name=business_name, role=Role(m.role), is_active=m.is_active
+                )
             )
     return [PlatformUserOut.model_validate({**u.__dict__, "memberships": by_user[u.id]}) for u in users]
 
@@ -470,29 +484,24 @@ async def list_platform_users(ctx: PlatformCtx, *, q: str | None, limit: int = 2
 
 
 async def update_platform_user(ctx: PlatformCtx, user_id: uuid.UUID, data: PlatformUserUpdate) -> PlatformUserOut:
+    """Only a platform admin reaches this, and they can never touch their own account here (below), so an admin
+    can always demote or deactivate someone else, but never the last one: reaching zero would need the last
+    remaining admin to edit themselves, which is exactly what is blocked."""
     user = await ctx.db.get(User, user_id)
     if user is None:
         raise NotFound("User not found")
-    if user.id == ctx.actor.user_id and data.model_fields_set & {"is_active", "is_platform_admin"}:
-        raise Unprocessable("You cannot change your own account here", code="cannot_edit_self")
     changes = data.model_fields_set
-    loses_admin = user.is_platform_admin and (
-        ("is_platform_admin" in changes and data.is_platform_admin is False)
-        or ("is_active" in changes and data.is_active is False)
-    )
-    if loses_admin:
-        other = await ctx.db.scalar(
-            select(func.count())
-            .select_from(User)
-            .where(User.is_platform_admin.is_(True), User.is_active.is_(True), User.id != user.id)
-        )
-        if not other:
-            raise Unprocessable("The platform needs at least one active admin", code="last_platform_admin")
+    if user.id == ctx.actor.user_id and changes & {"is_active", "is_platform_admin"}:
+        raise Unprocessable("You cannot change your own account here", code="cannot_edit_self")
     before = (await _platform_users_out(ctx.db, [user]))[0]
     if "is_active" in changes and data.is_active is not None:
         user.is_active = data.is_active
     if "is_platform_admin" in changes and data.is_platform_admin is not None:
         user.is_platform_admin = data.is_platform_admin
+    if "platform_role_title" in changes:
+        user.platform_role_title = data.platform_role_title
+    if "platform_scope_note" in changes:
+        user.platform_scope_note = data.platform_scope_note
     await ctx.db.flush()
     await ctx.db.refresh(user)
     out = (await _platform_users_out(ctx.db, [user]))[0]

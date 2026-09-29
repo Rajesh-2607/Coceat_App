@@ -4,7 +4,7 @@ from typing import Annotated
 from fastapi import APIRouter, Query, status
 from starlette.responses import JSONResponse
 
-from app.core.deps import IdempotencyKey, WorkspaceCtx
+from app.core.deps import AdminCtx, IdempotencyKey, WorkspaceCtx
 from app.core.idempotency import run_idempotent
 from app.modules.inventory import service
 from app.modules.inventory.schemas import (
@@ -53,6 +53,14 @@ async def update_location(
         body,
         lambda: service.update_location(ctx, location_id, body),
     )
+
+
+admin_router = APIRouter(prefix="/admin", tags=["admin"])
+
+
+@admin_router.get("/businesses/{business_id}/locations", response_model=list[LocationOut])
+async def admin_list_locations(business_id: uuid.UUID, ctx: AdminCtx) -> list[LocationOut]:
+    return await service.list_locations_for_admin(ctx.db, business_id)
 
 
 stock_router = APIRouter(prefix="/w/stock", tags=["stock"])

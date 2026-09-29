@@ -20,6 +20,10 @@ class User(IdMixin, TimestampMixin, Base):
     language: Mapped[str] = mapped_column(String(2), default="ta")
     is_platform_admin: Mapped[bool] = mapped_column(default=False)
     is_active: Mapped[bool] = mapped_column(default=True)
+    # descriptive only — shown on the platform team's Users page. Never checked for authorization;
+    # is_platform_admin remains the only real permission gate (see require_permission/require_module).
+    platform_role_title: Mapped[str | None] = mapped_column(String(60))
+    platform_scope_note: Mapped[str | None] = mapped_column(String(120))
 
 
 class Membership(IdMixin, TimestampMixin, Base):

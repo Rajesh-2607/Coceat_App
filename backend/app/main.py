@@ -21,6 +21,7 @@ from app.modules.accounts.router import admin_router as accounts_admin_router
 from app.modules.accounts.router import router as accounts_router
 from app.modules.audit.router import router as audit_router
 from app.modules.catalog.router import router as catalog_router
+from app.modules.inventory.router import admin_router as inventory_admin_router
 from app.modules.inventory.router import router as inventory_router
 from app.modules.inventory.router import stock_router
 from app.modules.ledger.router import money_router
@@ -104,6 +105,7 @@ def create_app() -> FastAPI:
         accounts_admin_router,
         platform_router,
         inventory_router,
+        inventory_admin_router,
         stock_router,
         catalog_router,
         customers_router,

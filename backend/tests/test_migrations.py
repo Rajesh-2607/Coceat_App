@@ -20,7 +20,10 @@ def test_models_match_migrations() -> None:
 def test_every_tenant_table_has_forced_rls() -> None:
     tenant_tables = {
         t.name for t in Base.metadata.tables.values() if "business_id" in t.c and not t.c.business_id.nullable
-    } - {"memberships"}  # platform table: looked up across businesses at login
+    } - {
+        "memberships",  # platform table: looked up across businesses at login
+        "subscriptions",  # platform table: the admin console lists/edits these across every business
+    }
     engine = create_engine(os.environ["DATABASE_URL_DIRECT"])
     with engine.connect() as conn:
         rows = conn.execute(

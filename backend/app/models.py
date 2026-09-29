@@ -8,7 +8,7 @@ from app.modules.catalog.models import Grade, Product, Unit, Variety
 from app.modules.inventory.models import Location, StockMovement, StockTransfer, WastageEntry
 from app.modules.ledger.models import CrateLedgerEntry, PartyLedgerEntry, Payment
 from app.modules.parties.models import Party
-from app.modules.platform.models import Business, VerticalTemplate
+from app.modules.platform.models import Business, PlatformSettings, Subscription, SubscriptionPlan, VerticalTemplate
 from app.modules.purchases.models import Purchase, PurchaseLine
 from app.modules.sales.models import Bill, BillLine, SaleReturn, SaleReturnLine
 
@@ -27,6 +27,7 @@ __all__ = [
     "Party",
     "PartyLedgerEntry",
     "Payment",
+    "PlatformSettings",
     "Product",
     "Purchase",
     "PurchaseLine",
@@ -34,6 +35,8 @@ __all__ = [
     "SaleReturnLine",
     "StockMovement",
     "StockTransfer",
+    "Subscription",
+    "SubscriptionPlan",
     "Unit",
     "User",
     "UserSession",

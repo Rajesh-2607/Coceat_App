@@ -95,6 +95,9 @@ class PlatformUserOut(BaseModel):
     language: str
     is_platform_admin: bool
     is_active: bool
+    # descriptive only (see User model) — never used for authorization
+    platform_role_title: str | None
+    platform_scope_note: str | None
     memberships: list[PlatformMembershipOut] = []
 
 
@@ -103,3 +106,5 @@ class PlatformUserUpdate(BaseModel):
 
     is_active: bool | None = None
     is_platform_admin: bool | None = None
+    platform_role_title: str | None = Field(default=None, max_length=60)
+    platform_scope_note: str | None = Field(default=None, max_length=120)

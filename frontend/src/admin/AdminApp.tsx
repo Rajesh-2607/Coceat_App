@@ -3,7 +3,11 @@ import { Link, NavLink, Route, Routes, useNavigate } from "react-router-dom";
 import { useLogout, useMe } from "../api/hooks";
 import { BusinessDetailPage } from "./BusinessDetailPage";
 import { BusinessesPage } from "./BusinessesPage";
+import { ConfigurationPage } from "./ConfigurationPage";
 import { OverviewPage } from "./OverviewPage";
+import { SettingsPage } from "./SettingsPage";
+import { SubscriptionsPage } from "./SubscriptionsPage";
+import { UsersPage } from "./UsersPage";
 
 /** Platform admin console: the Cocreat team manages businesses, their modules and their people. */
 export function AdminApp() {
@@ -23,6 +27,10 @@ export function AdminApp() {
         <nav className="flex gap-1 md:flex-col" aria-label={t("nav.menu")}>
           <AdminNavItem to="/admin" end icon="▦" label={t("admin.overview")} />
           <AdminNavItem to="/admin/businesses" icon="🏢" label={t("admin.businesses")} />
+          <AdminNavItem to="/admin/subscriptions" icon="💳" label={t("admin.subscriptions")} />
+          <AdminNavItem to="/admin/users" icon="👥" label={t("admin.users")} />
+          <AdminNavItem to="/admin/configuration" icon="🌱" label={t("admin.configuration")} />
+          <AdminNavItem to="/admin/settings" icon="⚙️" label={t("admin.settings")} />
         </nav>
       </aside>
 
@@ -46,11 +54,15 @@ export function AdminApp() {
             {t("common.logout")}
           </button>
         </header>
-        <main className="mx-auto max-w-5xl space-y-5 p-4 md:p-6">
+        <main className="mx-auto max-w-7xl space-y-5 p-4 md:p-6">
           <Routes>
             <Route index element={<OverviewPage />} />
             <Route path="businesses" element={<BusinessesPage />} />
             <Route path="businesses/:id" element={<BusinessDetailPage />} />
+            <Route path="subscriptions" element={<SubscriptionsPage />} />
+            <Route path="users" element={<UsersPage />} />
+            <Route path="configuration" element={<ConfigurationPage />} />
+            <Route path="settings" element={<SettingsPage />} />
           </Routes>
         </main>
       </div>

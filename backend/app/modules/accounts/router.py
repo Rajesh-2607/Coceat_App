@@ -1,7 +1,8 @@
 import uuid
 from datetime import datetime
+from typing import Annotated
 
-from fastapi import APIRouter, BackgroundTasks, Response, status
+from fastapi import APIRouter, BackgroundTasks, Query, Response, status
 
 from app.core.config import get_settings
 from app.core.deps import AdminCtx, CurrentSession, Db, Meta, WorkspaceCtx
@@ -14,6 +15,8 @@ from app.modules.accounts.schemas import (
     OtpRequestIn,
     OtpRequestOut,
     OtpVerifyIn,
+    PlatformUserOut,
+    PlatformUserUpdate,
     SelectBusinessIn,
     StaffOut,
     StaffUpdate,
@@ -104,5 +107,19 @@ async def list_members(business_id: uuid.UUID, ctx: AdminCtx) -> list[StaffOut]:
 @admin_router.patch("/businesses/{business_id}/members/{membership_id}", response_model=StaffOut)
 async def update_member(business_id: uuid.UUID, membership_id: uuid.UUID, body: StaffUpdate, ctx: AdminCtx) -> StaffOut:
     out = await service.admin_update_staff(ctx, business_id, membership_id, body)
+    await ctx.db.commit()
+    return out
+
+
+@admin_router.get("/users", response_model=list[PlatformUserOut])
+async def list_platform_users(
+    ctx: AdminCtx, q: Annotated[str | None, Query(max_length=60)] = None
+) -> list[PlatformUserOut]:
+    return await service.list_platform_users(ctx, q=q)
+
+
+@admin_router.patch("/users/{user_id}", response_model=PlatformUserOut)
+async def update_platform_user(user_id: uuid.UUID, body: PlatformUserUpdate, ctx: AdminCtx) -> PlatformUserOut:
+    out = await service.update_platform_user(ctx, user_id, body)
     await ctx.db.commit()
     return out
