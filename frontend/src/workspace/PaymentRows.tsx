@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import type { Schemas } from "../api/client";
 import { formatMoney, parseRupees } from "../lib/format";
 import { Input, LinkButton, SecondaryButton, Select } from "../lib/ui";
+import { PaymentScanner } from "./PaymentScanner";
 
 export type Method = Schemas["SalePaymentIn"]["method"];
 export const METHODS: Method[] = ["cash", "upi", "card", "bank", "cheque", "other"];
@@ -75,6 +76,7 @@ export function PaymentRows({
           + {t("pay.split")}
         </SecondaryButton>
       </div>
+      {rows.some((r) => r.method === "upi") && <PaymentScanner />}
     </div>
   );
 }

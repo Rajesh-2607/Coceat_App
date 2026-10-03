@@ -8,6 +8,7 @@ import { formatDateTime, formatMoney, parseRupees } from "../../lib/format";
 import { Badge, Button, Card, EmptyState, ErrorText, Field, Input, LinkButton, PageHeader, QueryBoundary, SecondaryButton, Select, Sheet, StatTile, Textarea } from "../../lib/ui";
 import { useName } from "../../lib/useName";
 import { METHODS, type Method } from "../PaymentRows";
+import { PaymentScanner } from "../PaymentScanner";
 
 type Context = Schemas["WorkspaceContextOut"];
 
@@ -170,6 +171,7 @@ function PaymentSheet({
             ))}
           </Select>
         </Field>
+        {method === "upi" && <PaymentScanner />}
         <Field label={t("stock.note")}>
           <Input maxLength={300} value={note} onChange={(e) => setNote(e.target.value)} />
         </Field>

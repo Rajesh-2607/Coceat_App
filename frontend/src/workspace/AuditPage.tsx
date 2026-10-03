@@ -5,7 +5,24 @@ import { formatDateTime } from "../lib/format";
 import { Card, EmptyState, Field, Input, PageHeader, QueryBoundary, Select } from "../lib/ui";
 
 /** Areas of the app, matched by the first part of an audit action ("stock" matches "stock.transfer"). */
-const AREAS = ["location", "product", "unit", "grade", "variety", "customer", "supplier", "party_ledger", "crate_ledger", "stock", "staff", "business", "auth"];
+const AREAS = [
+  "bill",
+  "payment",
+  "purchase",
+  "stock",
+  "party_ledger",
+  "crate_ledger",
+  "customer",
+  "supplier",
+  "location",
+  "product",
+  "unit",
+  "grade",
+  "variety",
+  "staff",
+  "business",
+  "auth",
+];
 
 export function AuditPage() {
   const { t, i18n } = useTranslation();

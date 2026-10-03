@@ -300,7 +300,10 @@
       "stock": "Stock",
       "staff": "Staff",
       "business": "Business settings",
-      "auth": "Logins"
+      "auth": "Logins",
+      "bill": "Bills",
+      "payment": "Payments",
+      "purchase": "Purchases"
     },
     "actions": {
       "auth": {
@@ -309,7 +312,8 @@
       },
       "business": {
         "create": "Business created",
-        "update": "Business settings changed"
+        "update": "Business settings changed",
+        "setup_complete": "Setup marked complete"
       },
       "member": {
         "upsert": "Staff added by Cocreat",
@@ -349,7 +353,30 @@
       },
       "party_ledger": {
         "opening": "Opening balance recorded",
-        "adjustment": "Balance corrected"
+        "adjustment": "Balance corrected",
+        "sale": "Sale on account",
+        "sale_return": "Sale return on account",
+        "purchase": "Purchase on account",
+        "purchase_return": "Purchase return on account",
+        "payment_in": "Payment received",
+        "payment_out": "Payment made",
+        "reversal": "Entry reversed"
+      },
+      "bill": {
+        "create": "Bill made",
+        "void": "Bill cancelled",
+        "return": "Goods taken back"
+      },
+      "purchase": {
+        "create": "Purchase received",
+        "void": "Purchase cancelled"
+      },
+      "payment": {
+        "in": "Money received",
+        "out": "Money paid"
+      },
+      "subscription": {
+        "update": "Subscription changed"
       },
       "crate_ledger": {
         "issued": "Crates given",
@@ -676,7 +703,9 @@
     "split": "Split payment",
     "settled": "Paid in full",
     "tooMuch": "Payments are {{amount}} more than the bill",
-    "onCredit": "{{amount}} will be added to the customer's account"
+    "onCredit": "{{amount}} will be added to the customer's account",
+    "scanAlt": "UPI payment scanner",
+    "scanHint": "Ask the customer to scan this code with any UPI app."
   },
   "bills": {
     "search": "Search by bill number, name or phone",
