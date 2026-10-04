@@ -75,6 +75,8 @@ function StaffSheet({ staff, onClose }: { staff: Staff | null; onClose: () => vo
   const update = useUpdateStaff();
   const [nameEn, setNameEn] = useState(staff?.name ?? "");
   const [phone, setPhone] = useState(staff?.phone ?? "");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [role, setRole] = useState<Role>(staff?.role ?? "billing");
   const [restricted, setRestricted] = useState(staff?.location_ids != null);
   const [chosen, setChosen] = useState<string[]>(staff?.location_ids ?? []);
@@ -86,7 +88,10 @@ function StaffSheet({ staff, onClose }: { staff: Staff | null; onClose: () => vo
     if (staff) {
       update.mutate({ membershipId: staff.membership_id, changes: { role, location_ids: locationIds } }, { onSuccess: onClose });
     } else {
-      add.mutate({ name: nameEn, phone, role, location_ids: locationIds }, { onSuccess: onClose });
+      add.mutate(
+        { name: nameEn, phone, username, password, role, location_ids: locationIds },
+        { onSuccess: onClose },
+      );
     }
   }
 
@@ -100,6 +105,28 @@ function StaffSheet({ staff, onClose }: { staff: Staff | null; onClose: () => vo
             </Field>
             <Field label={t("staff.phone")}>
               <Input required type="tel" inputMode="numeric" maxLength={14} value={phone} onChange={(e) => setPhone(e.target.value)} />
+            </Field>
+            <Field label={t("login.username")} hint={t("login.usernameHint")}>
+              <Input
+                required
+                autoCapitalize="none"
+                autoComplete="off"
+                pattern="[a-z0-9._\-]{3,40}"
+                maxLength={40}
+                value={username}
+                onChange={(e) => setUsername(e.target.value.toLowerCase())}
+              />
+            </Field>
+            <Field label={t("login.password")} hint={t("login.passwordHint")}>
+              <Input
+                required
+                type="password"
+                minLength={10}
+                maxLength={200}
+                autoComplete="new-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </Field>
           </>
         )}

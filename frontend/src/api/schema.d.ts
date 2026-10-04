@@ -297,6 +297,23 @@ export interface paths {
         patch: operations["update_vertical_api_admin_verticals__key__patch"];
         trace?: never;
     };
+    "/api/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Login */
+        post: operations["login_api_auth_login_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/auth/logout": {
         parameters: {
             query?: never;
@@ -308,40 +325,6 @@ export interface paths {
         put?: never;
         /** Logout */
         post: operations["logout_api_auth_logout_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/auth/otp/request": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Request Otp */
-        post: operations["request_otp_api_auth_otp_request_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/auth/otp/verify": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Verify Otp */
-        post: operations["verify_otp_api_auth_otp_verify_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -376,6 +359,23 @@ export interface paths {
         /** Select Business */
         put: operations["select_business_api_me_business_put"];
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/me/password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Change Password */
+        post: operations["change_password_api_me_password_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1892,6 +1892,13 @@ export interface components {
             /** Name Ta */
             name_ta?: string | null;
         };
+        /** LoginIn */
+        LoginIn: {
+            /** Password */
+            password: string;
+            /** Username */
+            username: string;
+        };
         /** MeOut */
         MeOut: {
             /** Current Business Id */
@@ -1912,7 +1919,11 @@ export interface components {
             /** Name Ta */
             name_ta: string | null;
         };
-        /** MemberIn */
+        /**
+         * MemberIn
+         * @description Adds a person (or updates an existing one, found by phone). ``username`` and ``password`` are the login.
+         *     The password is set here by the owner or platform admin; the person can change it later.
+         */
         MemberIn: {
             /** Location Ids */
             location_ids?: string[] | null;
@@ -1920,9 +1931,13 @@ export interface components {
             name: string;
             /** Name Ta */
             name_ta?: string | null;
+            /** Password */
+            password: string;
             /** Phone */
             phone: string;
             role: components["schemas"]["Role"];
+            /** Username */
+            username: string;
         };
         /** MemberOut */
         MemberOut: {
@@ -2010,31 +2025,6 @@ export interface components {
             quantity: number;
             /** Variety Id */
             variety_id?: string | null;
-        };
-        /** OtpRequestIn */
-        OtpRequestIn: {
-            /** Phone */
-            phone: string;
-        };
-        /** OtpRequestOut */
-        OtpRequestOut: {
-            /**
-             * Challenge Id
-             * Format: uuid
-             */
-            challenge_id: string;
-            /** Expires In Seconds */
-            expires_in_seconds: number;
-        };
-        /** OtpVerifyIn */
-        OtpVerifyIn: {
-            /**
-             * Challenge Id
-             * Format: uuid
-             */
-            challenge_id: string;
-            /** Code */
-            code: string;
         };
         /** OutstandingOut */
         OutstandingOut: {
@@ -2195,6 +2185,13 @@ export interface components {
             notes?: string | null;
             /** Phone */
             phone?: string | null;
+        };
+        /** PasswordChangeIn */
+        PasswordChangeIn: {
+            /** Current Password */
+            current_password: string;
+            /** New Password */
+            new_password: string;
         };
         /**
          * PaymentIn
@@ -2996,16 +2993,21 @@ export interface components {
              * Format: uuid
              */
             user_id: string;
+            /** Username */
+            username: string | null;
         };
         /**
          * StaffUpdate
          * @description Only the fields sent are changed. ``location_ids: null`` means all locations.
+         *     ``password`` resets the person's password (owner action).
          */
         StaffUpdate: {
             /** Is Active */
             is_active?: boolean | null;
             /** Location Ids */
             location_ids?: string[] | null;
+            /** Password */
+            password?: string | null;
             role?: components["schemas"]["Role"] | null;
         };
         /** StockAdjustmentIn */
@@ -4408,6 +4410,39 @@ export interface operations {
             };
         };
     };
+    login_api_auth_login_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LoginIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MeOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     logout_api_auth_logout_post: {
         parameters: {
             query?: never;
@@ -4425,72 +4460,6 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    request_otp_api_auth_otp_request_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["OtpRequestIn"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            202: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["OtpRequestOut"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    verify_otp_api_auth_otp_verify_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["OtpVerifyIn"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MeOut"];
-                };
             };
             /** @description Validation Error */
             422: {
@@ -4557,6 +4526,39 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["MeOut"];
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    change_password_api_me_password_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PasswordChangeIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {

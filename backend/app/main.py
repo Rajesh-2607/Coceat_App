@@ -3,11 +3,13 @@
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Any
 
 import sentry_sdk
-from fastapi import APIRouter, FastAPI, Request
+from fastapi import APIRouter, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from sqlalchemy import text
 from starlette.responses import JSONResponse
 
@@ -66,6 +68,22 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     await get_engine().dispose()
 
 
+def _mount_frontend(app: FastAPI, root: Path) -> None:
+    """Serve the built single-page app. Unknown /api paths stay 404; every other unknown path gets index.html
+    so client-side routes like /w/sell and /admin/businesses survive a reload."""
+    root = root.resolve()
+    index = root / "index.html"
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def single_page_app(full_path: str) -> FileResponse:
+        if full_path == "api" or full_path.startswith("api/"):
+            raise HTTPException(status_code=404)
+        candidate = (root / full_path).resolve()
+        if full_path and candidate.is_file() and candidate.is_relative_to(root):
+            return FileResponse(candidate)
+        return FileResponse(index)
+
+
 def create_app() -> FastAPI:
     settings = get_settings()  # fails fast if a required variable is missing
     configure_logging(settings.log_level)
@@ -120,6 +138,8 @@ def create_app() -> FastAPI:
     ):
         api.include_router(router)
     app.include_router(api)
+    if settings.frontend_dir:
+        _mount_frontend(app, Path(settings.frontend_dir))
 
     # outermost last: RequestContext wraps everything so even CORS/CSRF rejections get an ID and a log line
     app.add_middleware(CsrfOriginMiddleware, allowed_origins=settings.cors_origins)

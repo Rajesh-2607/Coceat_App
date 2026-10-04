@@ -62,10 +62,6 @@ def pytest_configure(config: pytest.Config) -> None:
         DATABASE_URL=url("cocreat_app", "app-test-pw"),
         DATABASE_URL_DIRECT=url("cocreat_owner", "owner-test-pw"),
         CORS_ORIGINS=f'["{ORIGIN}"]',
-        OTP_DEV_MODE="true",
-        SMS_API_KEY="fake-key",
-        SMS_SENDER_ID="FAKEID",
-        SMS_OTP_TEMPLATE_ID="fake-template",
         R2_ACCOUNT_ID="fake",
         R2_ACCESS_KEY_ID="fake",
         R2_SECRET_ACCESS_KEY="fake",
@@ -112,6 +108,15 @@ def random_phone() -> str:
     return "9" + "".join(secrets.choice("0123456789") for _ in range(9))
 
 
+# Every fake test account shares this password. It is only ever stored hashed.
+TEST_PASSWORD = "test-password-123"
+
+
+def username_for(phone: str) -> str:
+    """Login name derived from a fake phone number, so helpers can take the phone alone."""
+    return f"u{phone}"
+
+
 def pytest_asyncio_loop_factories(config: pytest.Config, item: pytest.Item) -> dict[str, Any]:
     # psycopg async can't use Windows' default Proactor loop (Linux, i.e. production, is unaffected)
     if sys.platform == "win32":
@@ -147,21 +152,21 @@ async def client_factory(app: Any) -> AsyncIterator[Any]:
         await c.aclose()
 
 
-async def login(client: Any, phone: str) -> dict[str, Any]:
-    r = await client.post("/api/auth/otp/request", json={"phone": phone})
-    assert r.status_code == 202, r.text
-    r = await client.post("/api/auth/otp/verify", json={"challenge_id": r.json()["challenge_id"], "code": "123456"})
+async def login(client: Any, phone: str, password: str = TEST_PASSWORD) -> dict[str, Any]:
+    r = await client.post("/api/auth/login", json={"username": username_for(phone), "password": password})
     assert r.status_code == 200, r.text
     me: dict[str, Any] = r.json()
     return me
 
 
 def create_user(phone: str, *, admin: bool = False) -> uuid.UUID:
+    from app.core.security import hash_password
+
     with owner_conn() as conn:
         row = conn.execute(
-            "INSERT INTO users (id, phone, name, language, is_platform_admin, is_active) "
-            "VALUES (gen_random_uuid(), %s, 'Test User', 'en', %s, true) RETURNING id",
-            (f"+91{phone}", admin),
+            "INSERT INTO users (id, phone, name, language, is_platform_admin, is_active, username, password_hash) "
+            "VALUES (gen_random_uuid(), %s, 'Test User', 'en', %s, true, %s, %s) RETURNING id",
+            (f"+91{phone}", admin, username_for(phone), hash_password(TEST_PASSWORD)),
         ).fetchone()
     assert row is not None
     return uuid.UUID(str(row[0]))
@@ -200,7 +205,14 @@ async def make_business(
     phone = random_phone()
     r = await admin_client.put(
         f"/api/admin/businesses/{business_id}/members",
-        json={"phone": phone, "name": "Member", "role": role, "location_ids": location_ids},
+        json={
+            "phone": phone,
+            "name": "Member",
+            "role": role,
+            "location_ids": location_ids,
+            "username": username_for(phone),
+            "password": TEST_PASSWORD,
+        },
     )
     assert r.status_code == 200, r.text
     client = client_factory()

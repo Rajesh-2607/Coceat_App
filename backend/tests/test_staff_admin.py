@@ -4,11 +4,19 @@ import uuid
 from typing import Any
 
 from tests import factory
-from tests.conftest import idem, make_business, random_phone
+from tests.conftest import TEST_PASSWORD, idem, make_business, random_phone, username_for
 
 
 def _staff_body(role: str = "viewer", **extra: Any) -> dict[str, Any]:
-    return {"phone": random_phone(), "name": "New Staff", "role": role, **extra}
+    phone = random_phone()
+    return {
+        "phone": phone,
+        "name": "New Staff",
+        "role": role,
+        "username": username_for(phone),
+        "password": TEST_PASSWORD,
+        **extra,
+    }
 
 
 async def test_owner_adds_lists_and_updates_staff(admin_client: Any, client_factory: Any) -> None:

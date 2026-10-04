@@ -1,5 +1,8 @@
-"""Primitives for OTPs, session tokens and hashing. Raw OTPs and tokens are never stored or logged."""
+"""Primitives for passwords, session tokens and phone normalisation.
 
+Raw passwords and tokens are never stored or logged."""
+
+import base64
 import hashlib
 import hmac
 import re
@@ -7,9 +10,11 @@ import secrets
 
 from app.core.config import get_settings
 
-DEV_OTP = "123456"
 SESSION_COOKIE = "cc_session"
 _INDIAN_MOBILE = re.compile(r"^[6-9]\d{9}$")
+
+# scrypt cost parameters (OWASP-level). Stored with each hash so they can be raised later without breaking logins.
+_SCRYPT_N, _SCRYPT_R, _SCRYPT_P = 2**14, 8, 1
 
 
 def _key() -> bytes:
@@ -29,22 +34,27 @@ def hash_session_token(token: str) -> str:
     return keyed_hash(token, "session")
 
 
-def new_otp() -> str:
-    if get_settings().otp_dev_mode:
-        return DEV_OTP
-    return f"{secrets.randbelow(1_000_000):06d}"
+def hash_password(password: str) -> str:
+    salt = secrets.token_bytes(16)
+    digest = hashlib.scrypt(password.encode(), salt=salt, n=_SCRYPT_N, r=_SCRYPT_R, p=_SCRYPT_P, dklen=32)
+    b64 = base64.b64encode
+    return f"scrypt${_SCRYPT_N}${_SCRYPT_R}${_SCRYPT_P}${b64(salt).decode()}${b64(digest).decode()}"
 
 
-def hash_otp(challenge_id: str, code: str) -> str:
-    return keyed_hash(f"{challenge_id}:{code}", "otp")
+def verify_password(password: str, stored: str) -> bool:
+    try:
+        _, n, r, p, salt_b64, digest_b64 = stored.split("$")
+        expected = base64.b64decode(digest_b64)
+        actual = hashlib.scrypt(
+            password.encode(), salt=base64.b64decode(salt_b64), n=int(n), r=int(r), p=int(p), dklen=len(expected)
+        )
+    except ValueError:
+        return False
+    return hmac.compare_digest(actual, expected)
 
 
-def otp_matches(challenge_id: str, code: str, expected_hash: str) -> bool:
-    return hmac.compare_digest(hash_otp(challenge_id, code), expected_hash)
-
-
-def hash_ip(ip: str | None) -> str | None:
-    return keyed_hash(ip, "ip") if ip else None
+# Checked when no account matches, so a wrong username takes as long as a wrong password.
+DUMMY_PASSWORD_HASH = hash_password(secrets.token_urlsafe(16))
 
 
 def normalize_indian_mobile(raw: str) -> str | None:

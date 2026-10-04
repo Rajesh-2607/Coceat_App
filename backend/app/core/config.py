@@ -20,15 +20,12 @@ class Settings(BaseSettings):
     db_max_overflow: int = 5
     cors_origins: list[str] = ["http://localhost:5173"]
     cookie_domain: str | None = None
+    # Built frontend served by the API itself (single-origin hosting). Unset in local development.
+    frontend_dir: str | None = None
     session_ttl_days: int = 30
     # Proxies in front of the API that append to X-Forwarded-For (Render: 1). The client IP is taken that many
     # entries from the RIGHT, so a client-supplied X-Forwarded-For can't spoof it. 0 = socket peer address.
     trusted_proxy_hops: int = Field(default=0, ge=0, le=5)
-
-    sms_api_key: SecretStr
-    sms_sender_id: str
-    sms_otp_template_id: str
-    otp_dev_mode: bool = False  # True ONLY locally: accept fixed OTP 123456, send no SMS
 
     r2_account_id: str
     r2_access_key_id: SecretStr
@@ -42,8 +39,6 @@ class Settings(BaseSettings):
     @model_validator(mode="after")
     def _refuse_unsafe_production(self) -> Self:
         if self.app_env == "production":
-            if self.otp_dev_mode:
-                raise ValueError("OTP_DEV_MODE must be false when APP_ENV=production")
             if len(self.session_secret.get_secret_value()) < 32:
                 raise ValueError("SESSION_SECRET must be at least 32 characters in production")
             if any(o.startswith("http://") for o in self.cors_origins):

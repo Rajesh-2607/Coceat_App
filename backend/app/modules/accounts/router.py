@@ -2,26 +2,24 @@ import uuid
 from datetime import datetime
 from typing import Annotated
 
-from fastapi import APIRouter, BackgroundTasks, Query, Response, status
+from fastapi import APIRouter, Query, Response, status
 
 from app.core.config import get_settings
 from app.core.deps import AdminCtx, CurrentSession, Db, Meta, WorkspaceCtx
 from app.core.security import SESSION_COOKIE
 from app.modules.accounts import service
 from app.modules.accounts.schemas import (
+    LoginIn,
     MemberIn,
     MemberOut,
     MeOut,
-    OtpRequestIn,
-    OtpRequestOut,
-    OtpVerifyIn,
+    PasswordChangeIn,
     PlatformUserOut,
     PlatformUserUpdate,
     SelectBusinessIn,
     StaffOut,
     StaffUpdate,
 )
-from app.modules.accounts.sms import get_sms_sender
 from app.modules.platform import service as platform
 from app.modules.platform.schemas import WorkspaceContextOut
 
@@ -42,18 +40,9 @@ def _set_session_cookie(response: Response, token: str, expires_at: datetime) ->
     )
 
 
-@router.post("/auth/otp/request", response_model=OtpRequestOut, status_code=status.HTTP_202_ACCEPTED)
-async def request_otp(body: OtpRequestIn, db: Db, meta: Meta, background: BackgroundTasks) -> OtpRequestOut:
-    issued = await service.request_otp(db, body.phone, meta)
-    if issued.code_to_send is not None:
-        # sent after the response so timing doesn't reveal whether the number is registered
-        background.add_task(get_sms_sender().send_otp, issued.phone, issued.code_to_send)
-    return OtpRequestOut(challenge_id=issued.challenge_id, expires_in_seconds=int(service.OTP_TTL.total_seconds()))
-
-
-@router.post("/auth/otp/verify", response_model=MeOut)
-async def verify_otp(body: OtpVerifyIn, db: Db, meta: Meta, response: Response) -> MeOut:
-    token, expires_at = await service.verify_otp(db, body.challenge_id, body.code, meta)
+@router.post("/auth/login", response_model=MeOut)
+async def login(body: LoginIn, db: Db, meta: Meta, response: Response) -> MeOut:
+    token, expires_at = await service.login(db, body.username, body.password, meta)
     _set_session_cookie(response, token, expires_at)
     user_session, user = await service.authenticate(db, token)
     return await service.me(db, user_session, user)
@@ -64,6 +53,13 @@ async def logout(db: Db, session: CurrentSession, meta: Meta, response: Response
     await service.logout(db, session[0], meta)
     await db.commit()
     response.delete_cookie(SESSION_COOKIE, domain=get_settings().cookie_domain or None, path="/")
+
+
+@router.post("/me/password", status_code=status.HTTP_204_NO_CONTENT)
+async def change_password(body: PasswordChangeIn, db: Db, session: CurrentSession, meta: Meta) -> None:
+    user_session, user = session
+    await service.change_password(db, user_session, user, body, meta)
+    await db.commit()
 
 
 @router.get("/me", response_model=MeOut)

@@ -80,19 +80,19 @@ export function useWorkspaceContext(enabled: boolean) {
   });
 }
 
-export function useRequestOtp() {
-  return useMutation({
-    mutationFn: async (phone: string) => unwrap(await api.POST("/api/auth/otp/request", { body: { phone } })),
-  });
-}
-
-export function useVerifyOtp() {
+export function useLogin() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (body: Schemas["OtpVerifyIn"]) => unwrap(await api.POST("/api/auth/otp/verify", { body })),
+    mutationFn: async (body: Schemas["LoginIn"]) => unwrap(await api.POST("/api/auth/login", { body })),
     onSuccess: (me) => {
       qc.setQueryData(queryKeys.me, me);
     },
+  });
+}
+
+export function useChangePassword() {
+  return useMutation({
+    mutationFn: async (body: Schemas["PasswordChangeIn"]) => unwrap(await api.POST("/api/me/password", { body })),
   });
 }
 
