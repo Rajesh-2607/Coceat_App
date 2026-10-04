@@ -17,8 +17,6 @@ services:
         value: "1"
       - key: TRUSTED_PROXY_HOPS
         value: "1"
-      - key: OTP_DEV_MODE
-        value: "false"
       - key: DB_APP_ROLE
         value: cocreat_app
       - key: CORS_ORIGINS
@@ -28,12 +26,6 @@ services:
       - key: DATABASE_URL
         sync: false
       - key: DATABASE_URL_DIRECT
-        sync: false
-      - key: SMS_API_KEY
-        sync: false
-      - key: SMS_SENDER_ID
-        sync: false
-      - key: SMS_OTP_TEMPLATE_ID
         sync: false
       - key: R2_ACCOUNT_ID
         sync: false

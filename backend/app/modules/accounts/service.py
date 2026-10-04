@@ -1,11 +1,10 @@
-"""OTP login, sessions, memberships and permission checks.
+"""Username and password login, sessions, memberships and permission checks.
 
-Auth flows commit themselves: failure state (OTP attempt counters) must persist even when the request fails.
+Auth flows commit themselves: failure state (the failed-login counter) must persist even when the request fails.
 Everything else follows the normal rule: services never commit, the router commits once.
 """
 
 import uuid
-from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 
 from sqlalchemy import func, or_, select
@@ -14,23 +13,23 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import get_settings
 from app.core.context import Actor, Ctx, PlatformCtx, RequestMeta, Tenant
 from app.core.db import set_tenant
-from app.core.errors import Forbidden, NotFound, TooManyRequests, Unauthorized, Unprocessable
+from app.core.errors import Conflict, Forbidden, NotFound, TooManyRequests, Unauthorized, Unprocessable
 from app.core.security import (
-    hash_ip,
-    hash_otp,
+    DUMMY_PASSWORD_HASH,
+    hash_password,
     hash_session_token,
-    new_otp,
     new_session_token,
     normalize_indian_mobile,
-    otp_matches,
+    verify_password,
 )
-from app.modules.accounts.models import Membership, OtpChallenge, User, UserSession
+from app.modules.accounts.models import Membership, User, UserSession
 from app.modules.accounts.permissions import Perm, Role, role_has
 from app.modules.accounts.schemas import (
     MemberIn,
     MemberOut,
     MembershipOut,
     MeOut,
+    PasswordChangeIn,
     PlatformMembershipOut,
     PlatformUserOut,
     PlatformUserUpdate,
@@ -42,10 +41,8 @@ from app.modules.platform import service as platform
 from app.modules.platform.models import Business
 from app.modules.platform.modules import ModuleKey
 
-OTP_TTL = timedelta(minutes=5)
-OTP_MAX_ATTEMPTS = 5
-OTP_PER_PHONE = (3, timedelta(minutes=10))
-OTP_PER_IP = (20, timedelta(hours=1))
+LOCKOUT_AFTER_FAILURES = 5
+LOCKOUT_DURATION = timedelta(minutes=15)
 
 
 def _now() -> datetime:
@@ -59,77 +56,32 @@ def _phone_or_422(raw: str) -> str:
     return phone
 
 
-# --- OTP login -------------------------------------------------------------------------------------------
+# --- login ----------------------------------------------------------------------------------------------
 
 
-@dataclass(frozen=True, slots=True)
-class OtpIssued:
-    challenge_id: uuid.UUID
-    phone: str
-    code_to_send: str | None  # None when no active user has this phone (response stays identical)
-
-
-async def request_otp(db: AsyncSession, raw_phone: str, meta: RequestMeta) -> OtpIssued:
-    phone = _phone_or_422(raw_phone)
+async def login(db: AsyncSession, username: str, password: str, meta: RequestMeta) -> tuple[str, datetime]:
+    """Return (raw session token, expiry). Failed attempts are counted and committed before the error is raised."""
+    invalid = Unauthorized("Wrong username or password", code="invalid_credentials")
     now = _now()
-    ip_hash = hash_ip(meta.ip)
-
-    limit, window = OTP_PER_PHONE
-    recent = await db.scalar(
-        select(func.count())
-        .select_from(OtpChallenge)
-        .where(OtpChallenge.phone == phone, OtpChallenge.created_at > now - window)
-    )
-    if (recent or 0) >= limit:
-        raise TooManyRequests("Too many OTP requests. Try again in a few minutes.", code="otp_rate_limited")
-    if ip_hash:
-        limit, window = OTP_PER_IP
-        recent = await db.scalar(
-            select(func.count())
-            .select_from(OtpChallenge)
-            .where(OtpChallenge.ip_hash == ip_hash, OtpChallenge.created_at > now - window)
-        )
-        if (recent or 0) >= limit:
-            raise TooManyRequests("Too many OTP requests. Try again later.", code="otp_rate_limited")
-
-    user_exists = await db.scalar(select(User.id).where(User.phone == phone, User.is_active.is_(True)))
-    challenge_id = uuid.uuid4()
-    code = new_otp()
-    db.add(
-        OtpChallenge(
-            id=challenge_id,
-            phone=phone,
-            code_hash=hash_otp(str(challenge_id), code),
-            ip_hash=ip_hash,
-            created_at=now,
-            expires_at=now + OTP_TTL,
-        )
-    )
-    await db.commit()
-    return OtpIssued(challenge_id, phone, code if user_exists else None)
-
-
-async def verify_otp(db: AsyncSession, challenge_id: uuid.UUID, code: str, meta: RequestMeta) -> tuple[str, datetime]:
-    """Return (raw session token, expiry). The raw token only ever lives in the cookie."""
-    invalid = Unauthorized("Wrong or expired OTP", code="otp_invalid")
-    now = _now()
-    challenge = await db.scalar(select(OtpChallenge).where(OtpChallenge.id == challenge_id).with_for_update())
-    if challenge is None or challenge.consumed_at is not None or challenge.expires_at <= now:
+    user = await db.scalar(select(User).where(User.username == username.strip().lower()).with_for_update())
+    if user is None or user.password_hash is None or not user.is_active:
+        verify_password(password, DUMMY_PASSWORD_HASH)  # same cost whether or not the account exists
         raise invalid
-    if challenge.attempts >= OTP_MAX_ATTEMPTS:
-        raise TooManyRequests("Too many wrong attempts. Request a new OTP.", code="otp_locked")
-
-    challenge.attempts += 1
-    if not otp_matches(str(challenge.id), code, challenge.code_hash):
+    if user.locked_until is not None and user.locked_until > now:
+        raise TooManyRequests("Too many wrong attempts. Try again in a few minutes.", code="account_locked")
+    if not verify_password(password, user.password_hash):
+        user.failed_logins += 1
+        if user.failed_logins >= LOCKOUT_AFTER_FAILURES:
+            user.locked_until = now + LOCKOUT_DURATION
+            user.failed_logins = 0
         await db.commit()
         raise invalid
+    user.failed_logins = 0
+    user.locked_until = None
+    return await _start_session(db, user, meta, now)
 
-    challenge.consumed_at = now
-    user = await db.scalar(select(User).where(User.phone == challenge.phone, User.is_active.is_(True)))
-    if user is None:
-        await db.commit()
-        raise invalid
 
+async def _start_session(db: AsyncSession, user: User, meta: RequestMeta, now: datetime) -> tuple[str, datetime]:
     memberships = await _active_memberships(db, user.id)
     only_business = memberships[0][0].business_id if len(memberships) == 1 else None
     token = new_session_token()
@@ -156,6 +108,23 @@ async def verify_otp(db: AsyncSession, challenge_id: uuid.UUID, code: str, meta:
     )
     await db.commit()
     return token, expires_at
+
+
+async def change_password(
+    db: AsyncSession, session: UserSession, user: User, data: PasswordChangeIn, meta: RequestMeta
+) -> None:
+    if user.password_hash is None or not verify_password(data.current_password, user.password_hash):
+        raise Unprocessable("Your current password is wrong", code="wrong_current_password")
+    user.password_hash = hash_password(data.new_password)
+    await audit.record_event(
+        db,
+        meta=meta,
+        action="auth.password_change",
+        actor_user_id=user.id,
+        business_id=session.business_id,
+        entity_type="user",
+        entity_id=user.id,
+    )
 
 
 # --- sessions --------------------------------------------------------------------------------------------
@@ -283,6 +252,7 @@ def _staff_out(m: Membership, u: User) -> StaffOut:
         name=u.name,
         name_ta=u.name_ta,
         phone=u.phone,
+        username=u.username,
         role=Role(m.role),
         location_ids=m.location_ids,
         is_active=m.is_active,
@@ -312,14 +282,54 @@ async def _staff_row(db: AsyncSession, business_id: uuid.UUID, membership_id: uu
     return row[0], row[1]
 
 
+async def _in_other_business(db: AsyncSession, user_id: uuid.UUID, business_id: uuid.UUID) -> bool:
+    count = await db.scalar(
+        select(func.count())
+        .select_from(Membership)
+        .where(Membership.user_id == user_id, Membership.business_id != business_id)
+    )
+    return bool(count)
+
+
+ACCOUNT_IN_USE = "This person already has an account used elsewhere. They must change their password themselves."
+
+
+async def _check_existing_login(
+    db: AsyncSession, user: User, business_id: uuid.UUID, username: str, password: str
+) -> None:
+    """Someone with access to this business may only set credentials for a person whose account is used nowhere
+    else. Otherwise an owner could take over a login that also works in another business."""
+    if user.username == username and user.password_hash and verify_password(password, user.password_hash):
+        return
+    if user.is_platform_admin or await _in_other_business(db, user.id, business_id):
+        raise Unprocessable(ACCOUNT_IN_USE, code="account_in_use")
+    if username != user.username and await db.scalar(
+        select(User.id).where(User.username == username, User.id != user.id)
+    ):
+        raise Conflict("That username is already taken", code="username_taken")
+    user.username = username
+    user.password_hash = hash_password(password)
+
+
 async def upsert_staff(db: AsyncSession, business_id: uuid.UUID, data: MemberIn) -> tuple[StaffOut | None, StaffOut]:
     """Add (or re-activate and update) a member of a business, creating the user by phone if needed."""
     phone = _phone_or_422(data.phone)
+    username = data.username.strip().lower()
     user = await db.scalar(select(User).where(User.phone == phone))
     if user is None:
-        user = User(phone=phone, name=data.name, name_ta=data.name_ta)
+        if await db.scalar(select(User.id).where(User.username == username)):
+            raise Conflict("That username is already taken", code="username_taken")
+        user = User(
+            phone=phone,
+            name=data.name,
+            name_ta=data.name_ta,
+            username=username,
+            password_hash=hash_password(data.password),
+        )
         db.add(user)
         await db.flush()
+    else:
+        await _check_existing_login(db, user, business_id, username, data.password)
     membership = await db.scalar(
         select(Membership).where(Membership.user_id == user.id, Membership.business_id == business_id)
     )
@@ -375,6 +385,10 @@ async def update_staff(
     )
     if loses_owner:
         await _ensure_another_owner(db, business_id, membership.id)
+    if "password" in changes and data.password is not None:
+        if user.is_platform_admin or await _in_other_business(db, user.id, business_id):
+            raise Unprocessable(ACCOUNT_IN_USE, code="account_in_use")
+        user.password_hash = hash_password(data.password)
     membership.role = new_role
     membership.is_active = new_active
     if "location_ids" in changes:

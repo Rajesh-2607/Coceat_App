@@ -7,6 +7,7 @@ import psycopg
 import pytest
 
 from tests.conftest import (
+    TEST_PASSWORD,
     app_conn,
     idem,
     login,
@@ -14,6 +15,7 @@ from tests.conftest import (
     owner_conn,
     random_phone,
     superuser_conn,
+    username_for,
 )
 
 
@@ -59,7 +61,14 @@ async def test_member_of_two_businesses_switches_explicitly(admin_client: Any, c
     phone = random_phone()
     for biz in (business_a, business_b):
         r = await admin_client.put(
-            f"/api/admin/businesses/{biz}/members", json={"phone": phone, "name": "Both", "role": "owner"}
+            f"/api/admin/businesses/{biz}/members",
+            json={
+                "phone": phone,
+                "name": "Both",
+                "role": "owner",
+                "username": username_for(phone),
+                "password": TEST_PASSWORD,
+            },
         )
         assert r.status_code == 200
     c = client_factory()

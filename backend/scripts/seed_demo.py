@@ -1,8 +1,8 @@
 """Seed a LOCAL dev API with two demo businesses (banana and tomato traders) through its real endpoints.
 
-Usage (API running locally with OTP_DEV_MODE=true and a platform admin user already in the database):
+Usage (API running locally, and a platform admin with a username and password already in the database):
 
-    uv run python scripts/seed_demo.py --api http://localhost:8000 --admin-phone <10-digit admin number>
+    uv run python scripts/seed_demo.py --api http://localhost:8000 --admin-username <name> --admin-password <password>
 
 It only talks HTTP, so every rule (permissions, tenancy, audit, idempotency) applies exactly as in the app.
 Safe to re-run: a business whose name already exists is skipped. It refuses to run against non-local URLs.
@@ -18,15 +18,16 @@ from urllib.parse import urlparse
 import httpx
 
 ORIGIN = "http://localhost:5173"  # the CSRF check wants the frontend's origin
-DEV_OTP = "123456"  # only valid when the API runs with OTP_DEV_MODE=true
+# demo logins only; these accounts exist in local data and are never created outside the dev database
+SEED_PASSWORD = "demo-password-123"  # noqa: S105 - fake local demo value, never used outside the dev database
 
-# id numbers are sequential placeholders, not real people
+# phone numbers are sequential placeholders, not real people: (phone, name, username)
 PEOPLE = {
-    "owner": ("9000000011", "Kumaravel"),
-    "manager": ("9000000012", "Selvi"),
-    "billing": ("9000000013", "Murugan"),
-    "stock": ("9000000014", "Ravi"),
-    "tomato_owner": ("9000000021", "Anbu"),
+    "owner": ("9000000011", "Kumaravel", "kumaravel"),
+    "manager": ("9000000012", "Selvi", "selvi"),
+    "billing": ("9000000013", "Murugan", "murugan"),
+    "stock": ("9000000014", "Ravi", "ravi"),
+    "tomato_owner": ("9000000021", "Anbu", "anbu"),
 }
 
 
@@ -34,10 +35,8 @@ class Api:
     def __init__(self, base: str) -> None:
         self.http = httpx.Client(base_url=base, headers={"Origin": ORIGIN}, timeout=30)
 
-    def login(self, phone: str) -> None:
-        r = self.http.post("/api/auth/otp/request", json={"phone": phone})
-        r.raise_for_status()
-        r = self.http.post("/api/auth/otp/verify", json={"challenge_id": r.json()["challenge_id"], "code": DEV_OTP})
+    def login(self, username: str, password: str) -> None:
+        r = self.http.post("/api/auth/login", json={"username": username, "password": password})
         r.raise_for_status()
 
     def get(self, url: str, **params: Any) -> Any:
@@ -78,10 +77,17 @@ def ensure_business(admin: Api, name: str, name_ta: str, vertical: str, gstin: s
 
 
 def add_member(admin: Api, business_id: str, key: str, role: str, location_ids: list[str] | None = None) -> None:
-    phone, name = PEOPLE[key]
+    phone, name, username = PEOPLE[key]
     admin.put(
         f"/api/admin/businesses/{business_id}/members",
-        {"phone": phone, "name": name, "role": role, "location_ids": location_ids},
+        {
+            "phone": phone,
+            "name": name,
+            "username": username,
+            "password": SEED_PASSWORD,
+            "role": role,
+            "location_ids": location_ids,
+        },
     )
 
 
@@ -94,7 +100,7 @@ def seed_banana(admin: Api, api_url: str) -> None:
         return
     add_member(admin, business_id, "owner", "owner")
     owner = Api(api_url)
-    owner.login(PEOPLE["owner"][0])
+    owner.login(PEOPLE["owner"][2], SEED_PASSWORD)
 
     shop = owner.post("/api/w/locations", {"name": "Koyambedu Shop", "name_ta": "கோயம்பேடு கடை", "kind": "shop"})
     godown = owner.post("/api/w/locations", {"name": "Madhavaram Godown", "name_ta": "மாதவரம் கிடங்கு", "kind": "godown"})
@@ -111,7 +117,7 @@ def seed_banana(admin: Api, api_url: str) -> None:
         name: str, name_ta: str, price: float, varieties: list[tuple[str, str]], *, kind: str = "weight"
     ) -> dict[str, Any]:
         unit = units["kg" if kind == "weight" else "piece"]
-        p = owner.post(
+        p: dict[str, Any] = owner.post(
             "/api/w/products",
             {
                 "name": name,
@@ -235,7 +241,7 @@ def seed_tomato(admin: Api, api_url: str) -> None:
         return
     add_member(admin, business_id, "tomato_owner", "owner")
     owner = Api(api_url)
-    owner.login(PEOPLE["tomato_owner"][0])
+    owner.login(PEOPLE["tomato_owner"][2], SEED_PASSWORD)
     shop = owner.post("/api/w/locations", {"name": "Koyambedu Market", "name_ta": "கோயம்பேடு சந்தை", "kind": "shop"})
     kg = next(u for u in owner.get("/api/w/units") if u["code"] == "kg")
     tomato = owner.post(
@@ -268,7 +274,7 @@ def seed_trading(admin: Api, api_url: str) -> None:
         {"address": "Shop 14, Koyambedu Wholesale Market, Chennai 600092", "phone": "9000000010"},
     )
     owner = Api(api_url)
-    owner.login(PEOPLE["owner"][0])
+    owner.login(PEOPLE["owner"][2], SEED_PASSWORD)
     if owner.get("/api/w/bills"):
         print("ABC Banana Traders already has bills: trading history skipped")
         return
@@ -360,18 +366,19 @@ def seed_trading(admin: Api, api_url: str) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--api", default="http://localhost:8000")
-    parser.add_argument("--admin-phone", required=True, help="a platform admin that already exists in the database")
+    parser.add_argument("--admin-username", required=True, help="a platform admin's username")
+    parser.add_argument("--admin-password", required=True, help="that admin's password")
     args = parser.parse_args()
     host = urlparse(args.api).hostname
     if host not in {"localhost", "127.0.0.1", "::1"}:
         sys.exit("Refusing to seed a non-local API.")
 
     admin = Api(args.api)
-    admin.login(args.admin_phone)
+    admin.login(args.admin_username, args.admin_password)
     seed_banana(admin, args.api)
     seed_tomato(admin, args.api)
     seed_trading(admin, args.api)
-    print("Done. Log in with any seeded number (OTP 123456 in dev): owner 9000000011, tomato owner 9000000021.")
+    print("Done. Log in as owner 'kumaravel' or tomato owner 'anbu' with the demo password (see SEED_PASSWORD).")
 
 
 if __name__ == "__main__":

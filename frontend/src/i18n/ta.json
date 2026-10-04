@@ -23,12 +23,11 @@
   },
   "login": {
     "title": "உள்நுழை",
-    "phone": "மொபைல் எண்",
-    "sendOtp": "OTP அனுப்பு",
-    "otp": "6 இலக்க OTP",
-    "sentTo": "{{phone}} க்கு OTP அனுப்பப்பட்டது",
-    "verify": "உள்நுழை",
-    "changeNumber": "எண்ணை மாற்று"
+    "username": "பயனர் பெயர்",
+    "usernameHint": "3–40 எழுத்துகள்: a–z, 0–9, புள்ளி, அடிக்கோடு அல்லது கோடு",
+    "password": "கடவுச்சொல்",
+    "passwordHint": "குறைந்தது 10 எழுத்துகள்",
+    "signIn": "உள்நுழை"
   },
   "business": {
     "choose": "வியாபாரத்தைத் தேர்ந்தெடு",
@@ -399,7 +398,12 @@
     "noGstin": "GST பதிவு இல்லை",
     "vertical": "தொழில்",
     "role": "உங்கள் பொறுப்பு",
-    "modules": "இயக்கப்பட்ட பகுதிகள்"
+    "modules": "இயக்கப்பட்ட பகுதிகள்",
+    "password": "கடவுச்சொல்",
+    "currentPassword": "தற்போதைய கடவுச்சொல்",
+    "newPassword": "புதிய கடவுச்சொல்",
+    "changePassword": "கடவுச்சொல்லை மாற்று",
+    "passwordChanged": "கடவுச்சொல் மாற்றப்பட்டது"
   },
   "admin": {
     "title": "Business OS · நிர்வாகம்",

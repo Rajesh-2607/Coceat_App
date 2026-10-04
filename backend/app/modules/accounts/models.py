@@ -12,9 +12,16 @@ class User(IdMixin, TimestampMixin, Base):
     """Platform table: one person, identified by phone, may belong to several businesses."""
 
     __tablename__ = "users"
-    __table_args__ = (CheckConstraint("language IN ('en', 'ta')", name="language"),)
+    __table_args__ = (
+        CheckConstraint("language IN ('en', 'ta')", name="language"),
+        CheckConstraint("username IS NULL OR username ~ '^[a-z0-9._-]{3,40}$'", name="username"),
+    )
 
-    phone: Mapped[str] = mapped_column(String(16), unique=True)  # E.164
+    phone: Mapped[str] = mapped_column(String(16), unique=True)  # E.164, contact details only
+    username: Mapped[str | None] = mapped_column(String(40), unique=True)  # lower-case; the login name
+    password_hash: Mapped[str | None] = mapped_column(String(200))  # scrypt, see core/security.py
+    failed_logins: Mapped[int] = mapped_column(SmallInteger, default=0)
+    locked_until: Mapped[datetime | None]
     name: Mapped[str] = mapped_column(String(120))
     name_ta: Mapped[str | None] = mapped_column(String(200))
     language: Mapped[str] = mapped_column(String(2), default="ta")

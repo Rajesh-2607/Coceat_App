@@ -23,12 +23,11 @@
   },
   "login": {
     "title": "Log in",
-    "phone": "Mobile number",
-    "sendOtp": "Send OTP",
-    "otp": "6-digit OTP",
-    "sentTo": "OTP sent to {{phone}}",
-    "verify": "Log in",
-    "changeNumber": "Change number"
+    "username": "Username",
+    "usernameHint": "3–40 characters: a–z, 0–9, dot, underscore or dash",
+    "password": "Password",
+    "passwordHint": "At least 10 characters",
+    "signIn": "Log in"
   },
   "business": {
     "choose": "Choose business",
@@ -399,7 +398,12 @@
     "noGstin": "Not registered for GST",
     "vertical": "Trade",
     "role": "Your role",
-    "modules": "Enabled sections"
+    "modules": "Enabled sections",
+    "password": "Password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "changePassword": "Change password",
+    "passwordChanged": "Password changed"
   },
   "admin": {
     "title": "Business OS · Admin",

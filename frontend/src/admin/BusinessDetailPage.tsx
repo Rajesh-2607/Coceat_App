@@ -389,16 +389,20 @@ function MembersCard({ businessId }: { businessId: string }) {
   const update = useAdminUpdateMember(businessId);
   const [phone, setPhone] = useState("");
   const [nameEn, setNameEn] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [role, setRole] = useState<Role>("owner");
 
   function submit(e: FormEvent) {
     e.preventDefault();
     add.mutate(
-      { phone, name: nameEn, role },
+      { phone, name: nameEn, username, password, role },
       {
         onSuccess: () => {
           setPhone("");
           setNameEn("");
+          setUsername("");
+          setPassword("");
         },
       },
     );
@@ -438,6 +442,28 @@ function MembersCard({ businessId }: { businessId: string }) {
         </Field>
         <Field label={t("staff.phone")}>
           <Input required type="tel" inputMode="numeric" maxLength={14} value={phone} onChange={(e) => setPhone(e.target.value)} />
+        </Field>
+        <Field label={t("login.username")} hint={t("login.usernameHint")}>
+          <Input
+            required
+            autoCapitalize="none"
+            autoComplete="off"
+            pattern="[a-z0-9._\-]{3,40}"
+            maxLength={40}
+            value={username}
+            onChange={(e) => setUsername(e.target.value.toLowerCase())}
+          />
+        </Field>
+        <Field label={t("login.password")} hint={t("login.passwordHint")}>
+          <Input
+            required
+            type="password"
+            minLength={10}
+            maxLength={200}
+            autoComplete="new-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </Field>
         <Field label={t("staff.role")}>
           <Select value={role} onChange={(e) => setRole(e.target.value as Role)}>

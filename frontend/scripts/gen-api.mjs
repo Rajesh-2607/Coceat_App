@@ -8,7 +8,7 @@ const backend = fileURLToPath(new URL("../../backend", import.meta.url));
 // Dumping the schema needs no real services: placeholders satisfy the settings check for this process only.
 const placeholders = Object.fromEntries(
   [
-    "SESSION_SECRET", "SMS_API_KEY", "SMS_SENDER_ID", "SMS_OTP_TEMPLATE_ID",
+    "SESSION_SECRET",
     "R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY", "R2_BUCKET",
   ].map((k) => [k, "schema-dump-placeholder"]),
 );

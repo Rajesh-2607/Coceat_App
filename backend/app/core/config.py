@@ -27,11 +27,6 @@ class Settings(BaseSettings):
     # entries from the RIGHT, so a client-supplied X-Forwarded-For can't spoof it. 0 = socket peer address.
     trusted_proxy_hops: int = Field(default=0, ge=0, le=5)
 
-    sms_api_key: SecretStr
-    sms_sender_id: str
-    sms_otp_template_id: str
-    otp_dev_mode: bool = False  # True ONLY locally: accept fixed OTP 123456, send no SMS
-
     r2_account_id: str
     r2_access_key_id: SecretStr
     r2_secret_access_key: SecretStr
@@ -44,8 +39,6 @@ class Settings(BaseSettings):
     @model_validator(mode="after")
     def _refuse_unsafe_production(self) -> Self:
         if self.app_env == "production":
-            if self.otp_dev_mode:
-                raise ValueError("OTP_DEV_MODE must be false when APP_ENV=production")
             if len(self.session_secret.get_secret_value()) < 32:
                 raise ValueError("SESSION_SECRET must be at least 32 characters in production")
             if any(o.startswith("http://") for o in self.cors_origins):
