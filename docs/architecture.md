@@ -125,8 +125,19 @@ CDN-served frontend, no egress fees on R2, and 30-day sessions that keep OTP SMS
 
 ## 8. Decisions that still need you
 
-1. **Bill number format** (series, prefix, FY reset) and **rounding rules** (paise per line vs per
-   bill, GST rounding, round-off to the rupee). These are legally sensitive and block the sales module.
+1. **Bill numbering and rounding: built with agreed defaults, please have your accountant confirm.**
+   - Number: `26-27/S/000123` = financial year (April to March), series, 6-digit counter, 14 characters. Sale
+     bills (Tax Invoice and Bill of Supply share one running series) use `S`, credit notes for returns `R`,
+     purchase entries `P`. Numbers come from `bill_sequences` with `SELECT ... FOR UPDATE` inside the bill's
+     transaction, so they are gap-free; a cancelled bill keeps its number.
+   - Rounding: each line to the paisa (half-up), GST per line on the taxable value, CGST = SGST within the
+     state and IGST across states, the bill total rounded to the whole rupee with the difference shown as
+     "round off". Prices are tax-exclusive. Rules live in `backend/app/modules/sales/pricing.py` (and its mirror
+     `frontend/src/lib/pricing.ts`, tested against the same numbers).
+   - A Tax Invoice is issued when the business has a GSTIN and a line carries GST; everything else is a Bill of
+     Supply. Returns are credit notes rounded on their own; a bill with returns cannot be cancelled.
+   - Not built (decide when needed): e-invoicing / e-way bills, reverse charge, composition scheme, TCS/TDS,
+     input tax credit on purchases, HSN summary tables, multiple series per business.
 2. **SMS provider.** `Msg91SmsSender` follows MSG91's v5 flow API. Verify it against your account
    and your DLT template before go-live.
 3. **Domains.** Config assumes `app.cocreat.in` and `api.cocreat.in`. Change `CORS_ORIGINS`,

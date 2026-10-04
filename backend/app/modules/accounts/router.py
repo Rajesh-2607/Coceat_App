@@ -1,7 +1,8 @@
 import uuid
 from datetime import datetime
+from typing import Annotated
 
-from fastapi import APIRouter, BackgroundTasks, Response, status
+from fastapi import APIRouter, BackgroundTasks, Query, Response, status
 
 from app.core.config import get_settings
 from app.core.deps import AdminCtx, CurrentSession, Db, Meta, WorkspaceCtx
@@ -14,7 +15,11 @@ from app.modules.accounts.schemas import (
     OtpRequestIn,
     OtpRequestOut,
     OtpVerifyIn,
+    PlatformUserOut,
+    PlatformUserUpdate,
     SelectBusinessIn,
+    StaffOut,
+    StaffUpdate,
 )
 from app.modules.accounts.sms import get_sms_sender
 from app.modules.platform import service as platform
@@ -89,5 +94,32 @@ admin_router = APIRouter(prefix="/admin", tags=["admin"])
 @admin_router.put("/businesses/{business_id}/members", response_model=MemberOut)
 async def upsert_member(business_id: uuid.UUID, body: MemberIn, ctx: AdminCtx) -> MemberOut:
     out = await service.add_member(ctx, business_id, body)
+    await ctx.db.commit()
+    return out
+
+
+@admin_router.get("/businesses/{business_id}/members", response_model=list[StaffOut])
+async def list_members(business_id: uuid.UUID, ctx: AdminCtx) -> list[StaffOut]:
+    await platform.get_business(ctx.db, business_id)  # 404 if missing
+    return await service.list_staff(ctx.db, business_id)
+
+
+@admin_router.patch("/businesses/{business_id}/members/{membership_id}", response_model=StaffOut)
+async def update_member(business_id: uuid.UUID, membership_id: uuid.UUID, body: StaffUpdate, ctx: AdminCtx) -> StaffOut:
+    out = await service.admin_update_staff(ctx, business_id, membership_id, body)
+    await ctx.db.commit()
+    return out
+
+
+@admin_router.get("/users", response_model=list[PlatformUserOut])
+async def list_platform_users(
+    ctx: AdminCtx, q: Annotated[str | None, Query(max_length=60)] = None
+) -> list[PlatformUserOut]:
+    return await service.list_platform_users(ctx, q=q)
+
+
+@admin_router.patch("/users/{user_id}", response_model=PlatformUserOut)
+async def update_platform_user(user_id: uuid.UUID, body: PlatformUserUpdate, ctx: AdminCtx) -> PlatformUserOut:
+    out = await service.update_platform_user(ctx, user_id, body)
     await ctx.db.commit()
     return out

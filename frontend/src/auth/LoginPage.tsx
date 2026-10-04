@@ -29,7 +29,7 @@ export function LoginPage() {
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-sm flex-col justify-center gap-6 p-6">
-      <h1 className="text-3xl font-bold text-green-800">{t("app.name")}</h1>
+      <h1 className="text-3xl font-bold text-violet-700">{t("app.name")}</h1>
       {!challenge ? (
         <form onSubmit={onRequest} className="space-y-4">
           <Field label={t("login.phone")}>

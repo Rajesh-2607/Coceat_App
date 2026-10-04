@@ -19,7 +19,25 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/businesses/{business_id}/members": {
+    "/api/admin/businesses/{business_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Business */
+        get: operations["get_business_api_admin_businesses__business_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Business */
+        patch: operations["update_business_api_admin_businesses__business_id__patch"];
+        trace?: never;
+    };
+    "/api/admin/businesses/{business_id}/complete-setup": {
         parameters: {
             query?: never;
             header?: never;
@@ -27,6 +45,41 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
+        put?: never;
+        /** Complete Setup */
+        post: operations["complete_setup_api_admin_businesses__business_id__complete_setup_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/businesses/{business_id}/locations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Admin List Locations */
+        get: operations["admin_list_locations_api_admin_businesses__business_id__locations_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/businesses/{business_id}/members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Members */
+        get: operations["list_members_api_admin_businesses__business_id__members_get"];
         /** Upsert Member */
         put: operations["upsert_member_api_admin_businesses__business_id__members_put"];
         post?: never;
@@ -34,6 +87,214 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/admin/businesses/{business_id}/members/{membership_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Member */
+        patch: operations["update_member_api_admin_businesses__business_id__members__membership_id__patch"];
+        trace?: never;
+    };
+    "/api/admin/businesses/{business_id}/subscription": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Subscription */
+        get: operations["get_subscription_api_admin_businesses__business_id__subscription_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Subscription */
+        patch: operations["update_subscription_api_admin_businesses__business_id__subscription_patch"];
+        trace?: never;
+    };
+    "/api/admin/plans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Plans */
+        get: operations["list_plans_api_admin_plans_get"];
+        put?: never;
+        /** Create Plan */
+        post: operations["create_plan_api_admin_plans_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/plans/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Plan */
+        patch: operations["update_plan_api_admin_plans__key__patch"];
+        trace?: never;
+    };
+    "/api/admin/settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Platform Settings */
+        get: operations["get_platform_settings_api_admin_settings_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Platform Settings */
+        patch: operations["update_platform_settings_api_admin_settings_patch"];
+        trace?: never;
+    };
+    "/api/admin/setup-queue": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Setup Queue */
+        get: operations["setup_queue_api_admin_setup_queue_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/subscriptions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Subscriptions */
+        get: operations["list_subscriptions_api_admin_subscriptions_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/subscriptions/stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Subscription Stats */
+        get: operations["subscription_stats_api_admin_subscriptions_stats_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Platform Users */
+        get: operations["list_platform_users_api_admin_users_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/users/{user_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Platform User */
+        patch: operations["update_platform_user_api_admin_users__user_id__patch"];
+        trace?: never;
+    };
+    "/api/admin/verticals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Verticals */
+        get: operations["list_verticals_api_admin_verticals_get"];
+        put?: never;
+        /** Create Vertical */
+        post: operations["create_vertical_api_admin_verticals_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/verticals/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Vertical */
+        patch: operations["update_vertical_api_admin_verticals__key__patch"];
         trace?: never;
     };
     "/api/auth/logout": {
@@ -138,6 +399,96 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/w/bills": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Bills */
+        get: operations["list_bills_api_w_bills_get"];
+        put?: never;
+        /** Create Sale */
+        post: operations["create_sale_api_w_bills_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/bills/{bill_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Bill */
+        get: operations["get_bill_api_w_bills__bill_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/bills/{bill_id}/pdf": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Bill Pdf
+         * @description The bill as a PDF: A4 for the office, 80 mm for the thermal printer. Same permission as viewing the bill.
+         */
+        get: operations["bill_pdf_api_w_bills__bill_id__pdf_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/bills/{bill_id}/returns": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Returns */
+        get: operations["list_returns_api_w_bills__bill_id__returns_get"];
+        put?: never;
+        /** Create Return */
+        post: operations["create_return_api_w_bills__bill_id__returns_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/bills/{bill_id}/void": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Void Bill */
+        post: operations["void_bill_api_w_bills__bill_id__void_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/w/context": {
         parameters: {
             query?: never;
@@ -147,6 +498,199 @@ export interface paths {
         };
         /** Workspace Context */
         get: operations["workspace_context_api_w_context_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/crates/balances": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Crate Balances
+         * @description Crates currently held by each party (only parties holding some, unless ``all_parties``).
+         */
+        get: operations["crate_balances_api_w_crates_balances_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/crates/entries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Record Crates */
+        post: operations["record_crates_api_w_crates_entries_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/customers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Parties */
+        get: operations["list_parties_api_w_customers_get"];
+        put?: never;
+        /** Create Party */
+        post: operations["create_party_api_w_customers_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/customers/{party_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Party */
+        get: operations["get_party_api_w_customers__party_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Party */
+        patch: operations["update_party_api_w_customers__party_id__patch"];
+        trace?: never;
+    };
+    "/api/w/customers/{party_id}/adjustments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Adjust Balance */
+        post: operations["adjust_balance_api_w_customers__party_id__adjustments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/customers/{party_id}/crate-adjustments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Adjust Crates */
+        post: operations["adjust_crates_api_w_customers__party_id__crate_adjustments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/customers/{party_id}/crates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Party Crates */
+        get: operations["party_crates_api_w_customers__party_id__crates_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/customers/{party_id}/ledger": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Party Ledger */
+        get: operations["party_ledger_api_w_customers__party_id__ledger_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/grades": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Grades */
+        get: operations["list_grades_api_w_grades_get"];
+        put?: never;
+        /** Create Grade */
+        post: operations["create_grade_api_w_grades_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/grades/{grade_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Grade */
+        patch: operations["update_grade_api_w_grades__grade_id__patch"];
+        trace?: never;
+    };
+    "/api/w/home": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Home */
+        get: operations["home_api_w_home_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -191,14 +735,599 @@ export interface paths {
         patch: operations["update_location_api_w_locations__location_id__patch"];
         trace?: never;
     };
+    "/api/w/money/payments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Payments */
+        get: operations["list_payments_api_w_money_payments_get"];
+        put?: never;
+        /** Create Payment */
+        post: operations["create_payment_api_w_money_payments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/money/payments/{payment_id}/reverse": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reverse Payment */
+        post: operations["reverse_payment_api_w_money_payments__payment_id__reverse_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Products */
+        get: operations["list_products_api_w_products_get"];
+        put?: never;
+        /** Create Product */
+        post: operations["create_product_api_w_products_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/products/{product_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Product */
+        get: operations["get_product_api_w_products__product_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Product */
+        patch: operations["update_product_api_w_products__product_id__patch"];
+        trace?: never;
+    };
+    "/api/w/products/{product_id}/varieties": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add Variety */
+        post: operations["add_variety_api_w_products__product_id__varieties_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/products/{product_id}/varieties/{variety_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Variety */
+        patch: operations["update_variety_api_w_products__product_id__varieties__variety_id__patch"];
+        trace?: never;
+    };
+    "/api/w/purchases": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Purchases */
+        get: operations["list_purchases_api_w_purchases_get"];
+        put?: never;
+        /** Create Purchase */
+        post: operations["create_purchase_api_w_purchases_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/purchases/{purchase_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Purchase */
+        get: operations["get_purchase_api_w_purchases__purchase_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/purchases/{purchase_id}/void": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Void Purchase */
+        post: operations["void_purchase_api_w_purchases__purchase_id__void_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/reports/daybook": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Day Book */
+        get: operations["day_book_api_w_reports_daybook_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/reports/gst": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Gst Report */
+        get: operations["gst_report_api_w_reports_gst_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/reports/outstanding": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Outstanding Report */
+        get: operations["outstanding_report_api_w_reports_outstanding_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/reports/sales": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Sales Report */
+        get: operations["sales_report_api_w_reports_sales_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/reports/wastage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Wastage Report */
+        get: operations["wastage_report_api_w_reports_wastage_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/staff": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Staff */
+        get: operations["list_staff_api_w_staff_get"];
+        put?: never;
+        /** Add Staff */
+        post: operations["add_staff_api_w_staff_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/staff/{membership_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Staff */
+        patch: operations["update_staff_api_w_staff__membership_id__patch"];
+        trace?: never;
+    };
+    "/api/w/stock/adjustments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Adjust Stock */
+        post: operations["adjust_stock_api_w_stock_adjustments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/stock/balances": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Stock Balances */
+        get: operations["stock_balances_api_w_stock_balances_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/stock/movements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Movements */
+        get: operations["list_movements_api_w_stock_movements_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/stock/movements/{movement_id}/reverse": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reverse Movement */
+        post: operations["reverse_movement_api_w_stock_movements__movement_id__reverse_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/stock/opening": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Record Opening */
+        post: operations["record_opening_api_w_stock_opening_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/stock/transfers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Transfers */
+        get: operations["list_transfers_api_w_stock_transfers_get"];
+        put?: never;
+        /** Transfer Stock */
+        post: operations["transfer_stock_api_w_stock_transfers_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/stock/wastage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Wastage */
+        get: operations["list_wastage_api_w_stock_wastage_get"];
+        put?: never;
+        /** Record Wastage */
+        post: operations["record_wastage_api_w_stock_wastage_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/suppliers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Parties */
+        get: operations["list_parties_api_w_suppliers_get"];
+        put?: never;
+        /** Create Party */
+        post: operations["create_party_api_w_suppliers_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/suppliers/{party_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Party */
+        get: operations["get_party_api_w_suppliers__party_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Party */
+        patch: operations["update_party_api_w_suppliers__party_id__patch"];
+        trace?: never;
+    };
+    "/api/w/suppliers/{party_id}/adjustments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Adjust Balance */
+        post: operations["adjust_balance_api_w_suppliers__party_id__adjustments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/suppliers/{party_id}/crate-adjustments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Adjust Crates */
+        post: operations["adjust_crates_api_w_suppliers__party_id__crate_adjustments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/suppliers/{party_id}/crates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Party Crates */
+        get: operations["party_crates_api_w_suppliers__party_id__crates_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/suppliers/{party_id}/ledger": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Party Ledger */
+        get: operations["party_ledger_api_w_suppliers__party_id__ledger_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/units": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Units */
+        get: operations["list_units_api_w_units_get"];
+        put?: never;
+        /** Create Unit */
+        post: operations["create_unit_api_w_units_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/w/units/{unit_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Unit */
+        patch: operations["update_unit_api_w_units__unit_id__patch"];
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /**
+         * AdminBusinessOut
+         * @description BusinessOut plus the cross-business summary fields the admin list/detail views show.
+         */
+        AdminBusinessOut: {
+            /** Address */
+            address: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Enabled Modules */
+            enabled_modules: string[];
+            /** Gstin */
+            gstin: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Location Count */
+            location_count: number;
+            /** Member Count */
+            member_count: number;
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta: string | null;
+            /** Phone */
+            phone: string | null;
+            /** Plan Key */
+            plan_key: string | null;
+            /** Plan Name */
+            plan_name: string | null;
+            /** Plan Name Ta */
+            plan_name_ta: string | null;
+            /** Setup Completed At */
+            setup_completed_at: string | null;
+            /** Status */
+            status: string;
+            /** Subscription Status */
+            subscription_status: ("trial" | "active" | "past_due" | "cancelled") | null;
+            /** Vertical Key */
+            vertical_key: string;
+        };
         /** AuditEventOut */
         AuditEventOut: {
             /** Action */
             action: string;
+            /** Actor Name */
+            actor_name?: string | null;
             /** Actor User Id */
             actor_user_id: string | null;
             /** After */
@@ -228,8 +1357,240 @@ export interface components {
             /** Next Before Seq */
             next_before_seq: number | null;
         };
+        /** BillLineOut */
+        BillLineOut: {
+            /** Cgst Paise */
+            cgst_paise: number;
+            /** Description */
+            description: string;
+            /** Description Ta */
+            description_ta: string | null;
+            /** Grade Id */
+            grade_id: string | null;
+            /** Gst Rate Bp */
+            gst_rate_bp: number;
+            /** Hsn Code */
+            hsn_code: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Igst Paise */
+            igst_paise: number;
+            /** Line No */
+            line_no: number;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Quantity Base */
+            quantity_base: number;
+            /**
+             * Returned Base
+             * @default 0
+             */
+            returned_base: number;
+            /** Sgst Paise */
+            sgst_paise: number;
+            /** Taxable Paise */
+            taxable_paise: number;
+            /**
+             * Total Paise
+             * @default 0
+             */
+            total_paise: number;
+            /** Unit Base Factor */
+            unit_base_factor: number;
+            /** Unit Code */
+            unit_code: string;
+            /**
+             * Unit Id
+             * Format: uuid
+             */
+            unit_id: string;
+            /** Unit Price Paise */
+            unit_price_paise: number;
+            /** Variety Id */
+            variety_id: string | null;
+        };
+        /** BillOut */
+        BillOut: {
+            /**
+             * Bill Date
+             * Format: date
+             */
+            bill_date: string;
+            /** Bill Number */
+            bill_number: string;
+            /** Cgst Paise */
+            cgst_paise: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Created By
+             * Format: uuid
+             */
+            created_by: string;
+            /**
+             * Credit Paise
+             * @default 0
+             */
+            credit_paise: number;
+            /**
+             * Doc Type
+             * @enum {string}
+             */
+            doc_type: "tax_invoice" | "bill_of_supply";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Igst Paise */
+            igst_paise: number;
+            /**
+             * Lines
+             * @default []
+             */
+            lines: components["schemas"]["BillLineOut"][];
+            /**
+             * Location Id
+             * Format: uuid
+             */
+            location_id: string;
+            /** Note */
+            note: string | null;
+            /** Paid Paise */
+            paid_paise: number;
+            /** Party Address */
+            party_address: string | null;
+            /** Party Gstin */
+            party_gstin: string | null;
+            /** Party Id */
+            party_id: string | null;
+            /** Party Name */
+            party_name: string | null;
+            /** Party Phone */
+            party_phone: string | null;
+            /**
+             * Payments
+             * @default []
+             */
+            payments: components["schemas"]["BillPaymentOut"][];
+            /** Place Of Supply */
+            place_of_supply: string | null;
+            /** Round Off Paise */
+            round_off_paise: number;
+            /** Seller Address */
+            seller_address: string | null;
+            /** Seller Gstin */
+            seller_gstin: string | null;
+            /** Seller Name */
+            seller_name: string;
+            /** Seller Phone */
+            seller_phone: string | null;
+            /** Series */
+            series: string;
+            /** Sgst Paise */
+            sgst_paise: number;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "active" | "void";
+            /**
+             * Supply Type
+             * @enum {string}
+             */
+            supply_type: "intra" | "inter";
+            /** Taxable Paise */
+            taxable_paise: number;
+            /** Total Paise */
+            total_paise: number;
+            /** Void Reason */
+            void_reason: string | null;
+            /** Voided At */
+            voided_at: string | null;
+        };
+        /** BillPaymentOut */
+        BillPaymentOut: {
+            /** Amount Paise */
+            amount_paise: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Direction
+             * @enum {string}
+             */
+            direction: "in" | "out";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "cash" | "upi" | "card" | "bank" | "cheque" | "other";
+            /** Reversal Of */
+            reversal_of: string | null;
+        };
+        /** BillSummaryOut */
+        BillSummaryOut: {
+            /**
+             * Bill Date
+             * Format: date
+             */
+            bill_date: string;
+            /** Bill Number */
+            bill_number: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Doc Type
+             * @enum {string}
+             */
+            doc_type: "tax_invoice" | "bill_of_supply";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Location Id
+             * Format: uuid
+             */
+            location_id: string;
+            /** Paid Paise */
+            paid_paise: number;
+            /** Party Id */
+            party_id: string | null;
+            /** Party Name */
+            party_name: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "active" | "void";
+            /** Total Paise */
+            total_paise: number;
+        };
         /** BusinessCreate */
         BusinessCreate: {
+            /** Address */
+            address?: string | null;
             /** Enabled Modules */
             enabled_modules?: components["schemas"]["ModuleKey"][] | null;
             /** Gstin */
@@ -238,11 +1599,15 @@ export interface components {
             name: string;
             /** Name Ta */
             name_ta?: string | null;
+            /** Phone */
+            phone?: string | null;
             /** Vertical Key */
             vertical_key: string;
         };
         /** BusinessOut */
         BusinessOut: {
+            /** Address */
+            address: string | null;
             /**
              * Created At
              * Format: date-time
@@ -261,15 +1626,218 @@ export interface components {
             name: string;
             /** Name Ta */
             name_ta: string | null;
+            /** Phone */
+            phone: string | null;
+            /** Setup Completed At */
+            setup_completed_at: string | null;
             /** Status */
             status: string;
             /** Vertical Key */
             vertical_key: string;
         };
+        /**
+         * BusinessUpdate
+         * @description Only the fields sent are changed. ``gstin: null`` clears the GSTIN.
+         */
+        BusinessUpdate: {
+            /** Address */
+            address?: string | null;
+            /** Enabled Modules */
+            enabled_modules?: components["schemas"]["ModuleKey"][] | null;
+            /** Gstin */
+            gstin?: string | null;
+            /** Name */
+            name?: string | null;
+            /** Name Ta */
+            name_ta?: string | null;
+            /** Phone */
+            phone?: string | null;
+            /** Status */
+            status?: ("active" | "suspended") | null;
+        };
+        /** CrateAdjustmentIn */
+        CrateAdjustmentIn: {
+            /** Note */
+            note: string;
+            /** Quantity */
+            quantity: number;
+        };
+        /** CrateBalanceOut */
+        CrateBalanceOut: {
+            /** Crates Held */
+            crates_held: number;
+            /**
+             * Party Id
+             * Format: uuid
+             */
+            party_id: string;
+        };
+        /** CrateEntryIn */
+        CrateEntryIn: {
+            /**
+             * Direction
+             * @enum {string}
+             */
+            direction: "issued" | "returned";
+            /** Location Id */
+            location_id?: string | null;
+            /** Note */
+            note?: string | null;
+            /**
+             * Party Id
+             * Format: uuid
+             */
+            party_id: string;
+            /** Quantity */
+            quantity: number;
+        };
+        /** CrateLedgerEntryOut */
+        CrateLedgerEntryOut: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Created By
+             * Format: uuid
+             */
+            created_by: string;
+            /** Entry Type */
+            entry_type: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Location Id */
+            location_id: string | null;
+            /** Note */
+            note: string | null;
+            /**
+             * Party Id
+             * Format: uuid
+             */
+            party_id: string;
+            /** Quantity */
+            quantity: number;
+            /** Reference Id */
+            reference_id: string | null;
+            /** Reference Type */
+            reference_type: string | null;
+            /** Reversal Of */
+            reversal_of: string | null;
+        };
+        /**
+         * DayBookOut
+         * @description One day's money. A part is null when the business doesn't have that module (or the role can't see it).
+         */
+        DayBookOut: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Payments */
+            payments: components["schemas"]["MethodTotal"][] | null;
+            purchases: components["schemas"]["PurchaseTotals"] | null;
+            sales: components["schemas"]["SalesTotals"] | null;
+        };
+        /** GradeCreate */
+        GradeCreate: {
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta?: string | null;
+        };
+        /** GradeOut */
+        GradeOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Is Active */
+            is_active: boolean;
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta: string | null;
+        };
+        /** GradeUpdate */
+        GradeUpdate: {
+            /** Is Active */
+            is_active?: boolean | null;
+            /** Name */
+            name?: string | null;
+            /** Name Ta */
+            name_ta?: string | null;
+        };
+        /** GstReportOut */
+        GstReportOut: {
+            /**
+             * Date From
+             * Format: date
+             */
+            date_from: string;
+            /**
+             * Date To
+             * Format: date
+             */
+            date_to: string;
+            /** Rows */
+            rows: components["schemas"]["GstRow"][];
+            /** Total Tax Paise */
+            total_tax_paise: number;
+        };
+        /** GstRow */
+        GstRow: {
+            /** Cgst Paise */
+            cgst_paise: number;
+            /** Gst Rate Bp */
+            gst_rate_bp: number;
+            /** Igst Paise */
+            igst_paise: number;
+            /** Sgst Paise */
+            sgst_paise: number;
+            /** Taxable Paise */
+            taxable_paise: number;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /**
+         * HomeOut
+         * @description Headline numbers for the Home page. A field is null when the member's role or the business's
+         *     enabled modules don't allow that part (the API refuses those endpoints anyway).
+         */
+        HomeOut: {
+            /** Crates Outstanding */
+            crates_outstanding: number | null;
+            /** Customers */
+            customers: number | null;
+            /** Locations */
+            locations: number | null;
+            /** Negative Stock Items */
+            negative_stock_items: number | null;
+            /** Payable Paise */
+            payable_paise: number | null;
+            /** Products */
+            products: number | null;
+            /** Receivable Paise */
+            receivable_paise: number | null;
+            /** Stock Items */
+            stock_items: number | null;
+            /** Suppliers */
+            suppliers: number | null;
+            /** Today Bills */
+            today_bills: number | null;
+            /** Today Sales Paise */
+            today_sales_paise: number | null;
+            /** Top Owing Customers */
+            top_owing_customers: components["schemas"]["PartyBalanceOut"][];
         };
         /** LocationCreate */
         LocationCreate: {
@@ -392,11 +1960,57 @@ export interface components {
             business_name_ta: string | null;
             role: components["schemas"]["Role"];
         };
+        /** MethodTotal */
+        MethodTotal: {
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "cash" | "upi" | "card" | "bank" | "cheque" | "other";
+            /** Paid Paise */
+            paid_paise: number;
+            /** Received Paise */
+            received_paise: number;
+        };
         /**
          * ModuleKey
          * @enum {string}
          */
         ModuleKey: "sell" | "stock" | "money" | "buy" | "bills" | "customers" | "suppliers" | "wastage" | "reports" | "staff" | "audit" | "settings";
+        /** NotificationPref */
+        NotificationPref: {
+            /**
+             * Email
+             * @default true
+             */
+            email: boolean;
+            /**
+             * Slack
+             * @default true
+             */
+            slack: boolean;
+        };
+        /** OpeningStockIn */
+        OpeningStockIn: {
+            /** Grade Id */
+            grade_id?: string | null;
+            /**
+             * Location Id
+             * Format: uuid
+             */
+            location_id: string;
+            /** Note */
+            note?: string | null;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Quantity */
+            quantity: number;
+            /** Variety Id */
+            variety_id?: string | null;
+        };
         /** OtpRequestIn */
         OtpRequestIn: {
             /** Phone */
@@ -422,11 +2036,935 @@ export interface components {
             /** Code */
             code: string;
         };
+        /** OutstandingOut */
+        OutstandingOut: {
+            /** Customers */
+            customers: components["schemas"]["PartyBalanceOut"][];
+            /** Owed To Us Paise */
+            owed_to_us_paise: number;
+            /** Suppliers */
+            suppliers: components["schemas"]["PartyBalanceOut"][];
+            /** We Owe Paise */
+            we_owe_paise: number;
+        };
+        /**
+         * PartyAdjustmentIn
+         * @description Manual correction. Positive: the party owes more; negative: owes less.
+         */
+        PartyAdjustmentIn: {
+            /** Amount Paise */
+            amount_paise: number;
+            /** Note */
+            note: string;
+        };
+        /** PartyBalanceOut */
+        PartyBalanceOut: {
+            /** Balance Paise */
+            balance_paise: number;
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta: string | null;
+            /**
+             * Party Id
+             * Format: uuid
+             */
+            party_id: string;
+        };
+        /** PartyCreate */
+        PartyCreate: {
+            /** Address */
+            address?: string | null;
+            /** Credit Limit Paise */
+            credit_limit_paise?: number | null;
+            /** Gstin */
+            gstin?: string | null;
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta?: string | null;
+            /** Notes */
+            notes?: string | null;
+            /**
+             * Opening Balance Paise
+             * @default 0
+             */
+            opening_balance_paise: number;
+            /** Phone */
+            phone?: string | null;
+        };
+        /** PartyLedgerEntryOut */
+        PartyLedgerEntryOut: {
+            /** Amount Paise */
+            amount_paise: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Created By
+             * Format: uuid
+             */
+            created_by: string;
+            /** Entry Type */
+            entry_type: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Note */
+            note: string | null;
+            /**
+             * Party Id
+             * Format: uuid
+             */
+            party_id: string;
+            /** Reference Id */
+            reference_id: string | null;
+            /** Reference Type */
+            reference_type: string | null;
+            /** Reversal Of */
+            reversal_of: string | null;
+        };
+        /** PartyOut */
+        PartyOut: {
+            /** Address */
+            address: string | null;
+            /**
+             * Balance Paise
+             * @default 0
+             */
+            balance_paise: number;
+            /**
+             * Crates Held
+             * @default 0
+             */
+            crates_held: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Credit Limit Paise */
+            credit_limit_paise: number | null;
+            /** Gstin */
+            gstin: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Is Active */
+            is_active: boolean;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "customer" | "supplier";
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta: string | null;
+            /** Notes */
+            notes: string | null;
+            /** Phone */
+            phone: string | null;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** PartyUpdate */
+        PartyUpdate: {
+            /** Address */
+            address?: string | null;
+            /** Credit Limit Paise */
+            credit_limit_paise?: number | null;
+            /** Gstin */
+            gstin?: string | null;
+            /** Is Active */
+            is_active?: boolean | null;
+            /** Name */
+            name?: string | null;
+            /** Name Ta */
+            name_ta?: string | null;
+            /** Notes */
+            notes?: string | null;
+            /** Phone */
+            phone?: string | null;
+        };
+        /**
+         * PaymentIn
+         * @description A payment with no bill attached: a customer settling dues, or paying a supplier.
+         */
+        PaymentIn: {
+            /** Amount Paise */
+            amount_paise: number;
+            /**
+             * Direction
+             * @enum {string}
+             */
+            direction: "in" | "out";
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "cash" | "upi" | "card" | "bank" | "cheque" | "other";
+            /** Note */
+            note?: string | null;
+            /**
+             * Party Id
+             * Format: uuid
+             */
+            party_id: string;
+        };
+        /** PaymentOut */
+        PaymentOut: {
+            /** Amount Paise */
+            amount_paise: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Created By
+             * Format: uuid
+             */
+            created_by: string;
+            /**
+             * Direction
+             * @enum {string}
+             */
+            direction: "in" | "out";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "cash" | "upi" | "card" | "bank" | "cheque" | "other";
+            /** Note */
+            note: string | null;
+            /** Party Id */
+            party_id: string | null;
+            /** Reference Id */
+            reference_id: string | null;
+            /** Reference Type */
+            reference_type: string | null;
+            /** Reversal Of */
+            reversal_of: string | null;
+        };
+        /** PlanCreate */
+        PlanCreate: {
+            /**
+             * Billing Period
+             * @enum {string}
+             */
+            billing_period: "trial" | "monthly" | "yearly";
+            /** Key */
+            key: string;
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta: string;
+            /** Price Paise */
+            price_paise?: number | null;
+            /** Trial Days */
+            trial_days?: number | null;
+        };
+        /** PlanOut */
+        PlanOut: {
+            /**
+             * Billing Period
+             * @enum {string}
+             */
+            billing_period: "trial" | "monthly" | "yearly";
+            /** Is Active */
+            is_active: boolean;
+            /** Key */
+            key: string;
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta: string;
+            /** Price Paise */
+            price_paise: number | null;
+            /** Trial Days */
+            trial_days: number | null;
+        };
+        /**
+         * PlanUpdate
+         * @description Only the fields sent are changed. Existing subscriptions on this plan keep their own price snapshot.
+         */
+        PlanUpdate: {
+            /** Is Active */
+            is_active?: boolean | null;
+            /** Name */
+            name?: string | null;
+            /** Name Ta */
+            name_ta?: string | null;
+            /** Price Paise */
+            price_paise?: number | null;
+        };
+        /** PlatformMembershipOut */
+        PlatformMembershipOut: {
+            /**
+             * Business Id
+             * Format: uuid
+             */
+            business_id: string;
+            /** Business Name */
+            business_name: string;
+            /** Is Active */
+            is_active: boolean;
+            role: components["schemas"]["Role"];
+        };
+        /** PlatformSettingsOut */
+        PlatformSettingsOut: {
+            /** Default Currency */
+            default_currency: string;
+            /** Default Plan Key */
+            default_plan_key: string | null;
+            /** Default Trial Days */
+            default_trial_days: number;
+            /** Grace Period Days */
+            grace_period_days: number;
+            /** Gst Rate Bp */
+            gst_rate_bp: number;
+            /** Invoice Prefix */
+            invoice_prefix: string;
+            /** Notification Prefs */
+            notification_prefs: {
+                [key: string]: components["schemas"]["NotificationPref"];
+            };
+            /** Platform Name */
+            platform_name: string;
+            /** Support Email */
+            support_email: string;
+        };
+        /**
+         * PlatformSettingsUpdate
+         * @description Only the fields sent are changed.
+         */
+        PlatformSettingsUpdate: {
+            /** Default Currency */
+            default_currency?: string | null;
+            /** Default Plan Key */
+            default_plan_key?: string | null;
+            /** Default Trial Days */
+            default_trial_days?: number | null;
+            /** Grace Period Days */
+            grace_period_days?: number | null;
+            /** Gst Rate Bp */
+            gst_rate_bp?: number | null;
+            /** Invoice Prefix */
+            invoice_prefix?: string | null;
+            /** Notification Prefs */
+            notification_prefs?: {
+                [key: string]: components["schemas"]["NotificationPref"];
+            } | null;
+            /** Platform Name */
+            platform_name?: string | null;
+            /** Support Email */
+            support_email?: string | null;
+        };
+        /** PlatformUserOut */
+        PlatformUserOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Is Active */
+            is_active: boolean;
+            /** Is Platform Admin */
+            is_platform_admin: boolean;
+            /** Language */
+            language: string;
+            /**
+             * Memberships
+             * @default []
+             */
+            memberships: components["schemas"]["PlatformMembershipOut"][];
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta: string | null;
+            /** Phone */
+            phone: string;
+            /** Platform Role Title */
+            platform_role_title: string | null;
+            /** Platform Scope Note */
+            platform_scope_note: string | null;
+        };
+        /**
+         * PlatformUserUpdate
+         * @description Only the fields sent are changed.
+         */
+        PlatformUserUpdate: {
+            /** Is Active */
+            is_active?: boolean | null;
+            /** Is Platform Admin */
+            is_platform_admin?: boolean | null;
+            /** Platform Role Title */
+            platform_role_title?: string | null;
+            /** Platform Scope Note */
+            platform_scope_note?: string | null;
+        };
+        /** ProductCreate */
+        ProductCreate: {
+            /** Default Price Paise */
+            default_price_paise?: number | null;
+            /**
+             * Gst Rate Bp
+             * @default 0
+             */
+            gst_rate_bp: number;
+            /** Hsn Code */
+            hsn_code?: string | null;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "weight" | "count";
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta?: string | null;
+            /**
+             * Unit Id
+             * Format: uuid
+             */
+            unit_id: string;
+        };
+        /** ProductOut */
+        ProductOut: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Default Price Paise */
+            default_price_paise: number | null;
+            /** Gst Rate Bp */
+            gst_rate_bp: number;
+            /** Hsn Code */
+            hsn_code: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Is Active */
+            is_active: boolean;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "weight" | "count";
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta: string | null;
+            /**
+             * Unit Id
+             * Format: uuid
+             */
+            unit_id: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /**
+             * Varieties
+             * @default []
+             */
+            varieties: components["schemas"]["VarietyOut"][];
+        };
+        /** ProductUpdate */
+        ProductUpdate: {
+            /** Default Price Paise */
+            default_price_paise?: number | null;
+            /** Gst Rate Bp */
+            gst_rate_bp?: number | null;
+            /** Hsn Code */
+            hsn_code?: string | null;
+            /** Is Active */
+            is_active?: boolean | null;
+            /** Name */
+            name?: string | null;
+            /** Name Ta */
+            name_ta?: string | null;
+            /** Unit Id */
+            unit_id?: string | null;
+        };
+        /** PurchaseIn */
+        PurchaseIn: {
+            /** Lines */
+            lines: components["schemas"]["PurchaseLineIn"][];
+            /**
+             * Location Id
+             * Format: uuid
+             */
+            location_id: string;
+            /** Note */
+            note?: string | null;
+            /** Payments */
+            payments?: components["schemas"]["PurchasePaymentIn"][];
+            /** Purchase Date */
+            purchase_date?: string | null;
+            /** Supplier Bill No */
+            supplier_bill_no?: string | null;
+            /**
+             * Supplier Id
+             * Format: uuid
+             */
+            supplier_id: string;
+        };
+        /** PurchaseLineIn */
+        PurchaseLineIn: {
+            /** Grade Id */
+            grade_id?: string | null;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Quantity */
+            quantity: number;
+            /** Unit Cost Paise */
+            unit_cost_paise: number;
+            /**
+             * Unit Id
+             * Format: uuid
+             */
+            unit_id: string;
+            /** Variety Id */
+            variety_id?: string | null;
+        };
+        /** PurchaseLineOut */
+        PurchaseLineOut: {
+            /** Amount Paise */
+            amount_paise: number;
+            /** Description */
+            description: string;
+            /** Description Ta */
+            description_ta: string | null;
+            /** Grade Id */
+            grade_id: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Line No */
+            line_no: number;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Quantity Base */
+            quantity_base: number;
+            /** Unit Base Factor */
+            unit_base_factor: number;
+            /** Unit Code */
+            unit_code: string;
+            /** Unit Cost Paise */
+            unit_cost_paise: number;
+            /**
+             * Unit Id
+             * Format: uuid
+             */
+            unit_id: string;
+            /** Variety Id */
+            variety_id: string | null;
+        };
+        /** PurchaseOut */
+        PurchaseOut: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Created By
+             * Format: uuid
+             */
+            created_by: string;
+            /**
+             * Credit Paise
+             * @default 0
+             */
+            credit_paise: number;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Lines
+             * @default []
+             */
+            lines: components["schemas"]["PurchaseLineOut"][];
+            /**
+             * Location Id
+             * Format: uuid
+             */
+            location_id: string;
+            /** Note */
+            note: string | null;
+            /** Paid Paise */
+            paid_paise: number;
+            /**
+             * Payments
+             * @default []
+             */
+            payments: components["schemas"]["PurchasePaymentOut"][];
+            /**
+             * Purchase Date
+             * Format: date
+             */
+            purchase_date: string;
+            /** Purchase Number */
+            purchase_number: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "active" | "void";
+            /** Supplier Bill No */
+            supplier_bill_no: string | null;
+            /**
+             * Supplier Id
+             * Format: uuid
+             */
+            supplier_id: string;
+            /** Supplier Name */
+            supplier_name: string;
+            /** Total Paise */
+            total_paise: number;
+            /** Void Reason */
+            void_reason: string | null;
+            /** Voided At */
+            voided_at: string | null;
+        };
+        /** PurchasePaymentIn */
+        PurchasePaymentIn: {
+            /** Amount Paise */
+            amount_paise: number;
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "cash" | "upi" | "card" | "bank" | "cheque" | "other";
+        };
+        /** PurchasePaymentOut */
+        PurchasePaymentOut: {
+            /** Amount Paise */
+            amount_paise: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Direction
+             * @enum {string}
+             */
+            direction: "in" | "out";
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "cash" | "upi" | "card" | "bank" | "cheque" | "other";
+            /** Reversal Of */
+            reversal_of: string | null;
+        };
+        /** PurchaseSummaryOut */
+        PurchaseSummaryOut: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Location Id
+             * Format: uuid
+             */
+            location_id: string;
+            /** Paid Paise */
+            paid_paise: number;
+            /**
+             * Purchase Date
+             * Format: date
+             */
+            purchase_date: string;
+            /** Purchase Number */
+            purchase_number: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "active" | "void";
+            /** Supplier Bill No */
+            supplier_bill_no: string | null;
+            /**
+             * Supplier Id
+             * Format: uuid
+             */
+            supplier_id: string;
+            /** Supplier Name */
+            supplier_name: string;
+            /** Total Paise */
+            total_paise: number;
+        };
+        /** PurchaseTotals */
+        PurchaseTotals: {
+            /** Paid Paise */
+            paid_paise: number;
+            /** Purchases */
+            purchases: number;
+            /** Total Paise */
+            total_paise: number;
+        };
+        /** ReturnIn */
+        ReturnIn: {
+            /** Lines */
+            lines: components["schemas"]["ReturnLineIn"][];
+            /** Location Id */
+            location_id?: string | null;
+            /** Reason */
+            reason: string;
+            /** Refund Method */
+            refund_method?: ("cash" | "upi" | "card" | "bank" | "cheque" | "other") | null;
+            /**
+             * Refund Paise
+             * @default 0
+             */
+            refund_paise: number;
+            /**
+             * Restock
+             * @default true
+             */
+            restock: boolean;
+        };
+        /** ReturnLineIn */
+        ReturnLineIn: {
+            /**
+             * Bill Line Id
+             * Format: uuid
+             */
+            bill_line_id: string;
+            /** Quantity */
+            quantity: number;
+        };
+        /** ReturnLineOut */
+        ReturnLineOut: {
+            /**
+             * Bill Line Id
+             * Format: uuid
+             */
+            bill_line_id: string;
+            /** Cgst Paise */
+            cgst_paise: number;
+            /** Description */
+            description: string;
+            /** Igst Paise */
+            igst_paise: number;
+            /** Quantity Base */
+            quantity_base: number;
+            /** Sgst Paise */
+            sgst_paise: number;
+            /** Taxable Paise */
+            taxable_paise: number;
+        };
+        /** ReturnOut */
+        ReturnOut: {
+            /**
+             * Bill Id
+             * Format: uuid
+             */
+            bill_id: string;
+            /** Bill Number */
+            bill_number: string;
+            /** Cgst Paise */
+            cgst_paise: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Igst Paise */
+            igst_paise: number;
+            /** Lines */
+            lines: components["schemas"]["ReturnLineOut"][];
+            /** Location Id */
+            location_id: string | null;
+            /** Reason */
+            reason: string;
+            /** Refund Method */
+            refund_method: ("cash" | "upi" | "card" | "bank" | "cheque" | "other") | null;
+            /** Refund Paise */
+            refund_paise: number;
+            /**
+             * Return Date
+             * Format: date
+             */
+            return_date: string;
+            /** Return Number */
+            return_number: string;
+            /** Round Off Paise */
+            round_off_paise: number;
+            /** Sgst Paise */
+            sgst_paise: number;
+            /** Taxable Paise */
+            taxable_paise: number;
+            /** Total Paise */
+            total_paise: number;
+        };
+        /** ReverseIn */
+        ReverseIn: {
+            /** Reason */
+            reason: string;
+        };
         /**
          * Role
          * @enum {string}
          */
         Role: "owner" | "manager" | "billing" | "stock" | "viewer";
+        /** SaleIn */
+        SaleIn: {
+            /** Lines */
+            lines: components["schemas"]["SaleLineIn"][];
+            /**
+             * Location Id
+             * Format: uuid
+             */
+            location_id: string;
+            /** Note */
+            note?: string | null;
+            /** Party Id */
+            party_id?: string | null;
+            /** Payments */
+            payments?: components["schemas"]["SalePaymentIn"][];
+            /** Place Of Supply */
+            place_of_supply?: string | null;
+        };
+        /** SaleLineIn */
+        SaleLineIn: {
+            /** Grade Id */
+            grade_id?: string | null;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Quantity */
+            quantity: number;
+            /**
+             * Unit Id
+             * Format: uuid
+             */
+            unit_id: string;
+            /** Unit Price Paise */
+            unit_price_paise: number;
+            /** Variety Id */
+            variety_id?: string | null;
+        };
+        /** SalePaymentIn */
+        SalePaymentIn: {
+            /** Amount Paise */
+            amount_paise: number;
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "cash" | "upi" | "card" | "bank" | "cheque" | "other";
+        };
+        /** SalesDayRow */
+        SalesDayRow: {
+            /** Bills */
+            bills: number;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Total Paise */
+            total_paise: number;
+        };
+        /** SalesProductRow */
+        SalesProductRow: {
+            /** Description */
+            description: string;
+            /** Product Id */
+            product_id: string;
+            /** Quantity Base */
+            quantity_base: number;
+            /** Taxable Paise */
+            taxable_paise: number;
+            /** Total Paise */
+            total_paise: number;
+        };
+        /** SalesReportOut */
+        SalesReportOut: {
+            /** By Day */
+            by_day: components["schemas"]["SalesDayRow"][];
+            /** By Product */
+            by_product: components["schemas"]["SalesProductRow"][];
+            /**
+             * Date From
+             * Format: date
+             */
+            date_from: string;
+            /**
+             * Date To
+             * Format: date
+             */
+            date_to: string;
+            totals: components["schemas"]["SalesTotals"];
+        };
+        /** SalesTotals */
+        SalesTotals: {
+            /** Bills */
+            bills: number;
+            /** Collected Paise */
+            collected_paise: number;
+            /** Returns */
+            returns: number;
+            /** Returns Paise */
+            returns_paise: number;
+            /** Tax Paise */
+            tax_paise: number;
+            /** Taxable Paise */
+            taxable_paise: number;
+            /** Total Paise */
+            total_paise: number;
+        };
         /** SelectBusinessIn */
         SelectBusinessIn: {
             /**
@@ -434,6 +2972,377 @@ export interface components {
              * Format: uuid
              */
             business_id: string;
+        };
+        /** StaffOut */
+        StaffOut: {
+            /** Is Active */
+            is_active: boolean;
+            /** Location Ids */
+            location_ids: string[] | null;
+            /**
+             * Membership Id
+             * Format: uuid
+             */
+            membership_id: string;
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta: string | null;
+            /** Phone */
+            phone: string;
+            role: components["schemas"]["Role"];
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+        };
+        /**
+         * StaffUpdate
+         * @description Only the fields sent are changed. ``location_ids: null`` means all locations.
+         */
+        StaffUpdate: {
+            /** Is Active */
+            is_active?: boolean | null;
+            /** Location Ids */
+            location_ids?: string[] | null;
+            role?: components["schemas"]["Role"] | null;
+        };
+        /** StockAdjustmentIn */
+        StockAdjustmentIn: {
+            /** Grade Id */
+            grade_id?: string | null;
+            /**
+             * Location Id
+             * Format: uuid
+             */
+            location_id: string;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Quantity */
+            quantity: number;
+            /** Reason */
+            reason: string;
+            /** Variety Id */
+            variety_id?: string | null;
+        };
+        /** StockBalanceOut */
+        StockBalanceOut: {
+            /** Grade Id */
+            grade_id: string | null;
+            /** Grade Name */
+            grade_name: string | null;
+            /** Grade Name Ta */
+            grade_name_ta: string | null;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "weight" | "count";
+            /**
+             * Location Id
+             * Format: uuid
+             */
+            location_id: string;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Product Name */
+            product_name: string;
+            /** Product Name Ta */
+            product_name_ta: string | null;
+            /** Quantity */
+            quantity: number;
+            /** Variety Id */
+            variety_id: string | null;
+            /** Variety Name */
+            variety_name: string | null;
+            /** Variety Name Ta */
+            variety_name_ta: string | null;
+        };
+        /** StockMovementOut */
+        StockMovementOut: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Created By
+             * Format: uuid
+             */
+            created_by: string;
+            /** Grade Id */
+            grade_id: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Location Id
+             * Format: uuid
+             */
+            location_id: string;
+            /**
+             * Movement Type
+             * @enum {string}
+             */
+            movement_type: "opening" | "adjustment" | "transfer_out" | "transfer_in" | "wastage" | "reversal" | "purchase" | "sale" | "sale_return";
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Quantity */
+            quantity: number;
+            /** Reason */
+            reason: string | null;
+            /** Reference Id */
+            reference_id: string | null;
+            /** Reference Type */
+            reference_type: string | null;
+            /** Reversal Of */
+            reversal_of: string | null;
+            /** Variety Id */
+            variety_id: string | null;
+        };
+        /** SubscriptionOut */
+        SubscriptionOut: {
+            /**
+             * Business Id
+             * Format: uuid
+             */
+            business_id: string;
+            /** Cancelled At */
+            cancelled_at: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Current Period End */
+            current_period_end: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Notes */
+            notes: string | null;
+            /**
+             * Payment Status
+             * @enum {string}
+             */
+            payment_status: "ok" | "failed";
+            /** Plan Key */
+            plan_key: string;
+            /** Price Paise */
+            price_paise: number | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "trial" | "active" | "past_due" | "cancelled";
+            /** Trial Ends At */
+            trial_ends_at: string | null;
+        };
+        /** SubscriptionStatsOut */
+        SubscriptionStatsOut: {
+            /** Active */
+            active: number;
+            /** Cancelled */
+            cancelled: number;
+            /** Expiring Soon */
+            expiring_soon: number;
+            /** Mrr Paise */
+            mrr_paise: number;
+            /** Past Due */
+            past_due: number;
+            /** Payment Failures */
+            payment_failures: number;
+            /** Trial */
+            trial: number;
+        };
+        /**
+         * SubscriptionUpdate
+         * @description Only the fields sent are changed. Changing ``plan_key`` alone does not change status or dates.
+         */
+        SubscriptionUpdate: {
+            /** Current Period End */
+            current_period_end?: string | null;
+            /** Notes */
+            notes?: string | null;
+            /** Payment Status */
+            payment_status?: ("ok" | "failed") | null;
+            /** Plan Key */
+            plan_key?: string | null;
+            /** Price Paise */
+            price_paise?: number | null;
+            /** Status */
+            status?: ("trial" | "active" | "past_due" | "cancelled") | null;
+            /** Trial Ends At */
+            trial_ends_at?: string | null;
+        };
+        /** SubscriptionWithBusinessOut */
+        SubscriptionWithBusinessOut: {
+            /**
+             * Business Id
+             * Format: uuid
+             */
+            business_id: string;
+            /** Business Name */
+            business_name: string;
+            /** Business Name Ta */
+            business_name_ta: string | null;
+            /** Cancelled At */
+            cancelled_at: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Current Period End */
+            current_period_end: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Notes */
+            notes: string | null;
+            /**
+             * Payment Status
+             * @enum {string}
+             */
+            payment_status: "ok" | "failed";
+            /** Plan Key */
+            plan_key: string;
+            /** Price Paise */
+            price_paise: number | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "trial" | "active" | "past_due" | "cancelled";
+            /** Trial Ends At */
+            trial_ends_at: string | null;
+        };
+        /** TransferIn */
+        TransferIn: {
+            /**
+             * From Location Id
+             * Format: uuid
+             */
+            from_location_id: string;
+            /** Lines */
+            lines: components["schemas"]["TransferLineIn"][];
+            /** Note */
+            note?: string | null;
+            /**
+             * To Location Id
+             * Format: uuid
+             */
+            to_location_id: string;
+        };
+        /** TransferLineIn */
+        TransferLineIn: {
+            /** Grade Id */
+            grade_id?: string | null;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Quantity */
+            quantity: number;
+            /** Variety Id */
+            variety_id?: string | null;
+        };
+        /** TransferOut */
+        TransferOut: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Created By
+             * Format: uuid
+             */
+            created_by: string;
+            /**
+             * From Location Id
+             * Format: uuid
+             */
+            from_location_id: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Movements */
+            movements: components["schemas"]["StockMovementOut"][];
+            /** Note */
+            note: string | null;
+            /**
+             * To Location Id
+             * Format: uuid
+             */
+            to_location_id: string;
+        };
+        /** UnitCreate */
+        UnitCreate: {
+            /** Base Factor */
+            base_factor: number;
+            /** Code */
+            code: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "weight" | "count";
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta?: string | null;
+        };
+        /** UnitOut */
+        UnitOut: {
+            /** Base Factor */
+            base_factor: number;
+            /** Code */
+            code: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Is Active */
+            is_active: boolean;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "weight" | "count";
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta: string | null;
+        };
+        /** UnitUpdate */
+        UnitUpdate: {
+            /** Is Active */
+            is_active?: boolean | null;
+            /** Name */
+            name?: string | null;
+            /** Name Ta */
+            name_ta?: string | null;
         };
         /** ValidationError */
         ValidationError: {
@@ -447,6 +3356,216 @@ export interface components {
             msg: string;
             /** Error Type */
             type: string;
+        };
+        /** VarietyCreate */
+        VarietyCreate: {
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta?: string | null;
+        };
+        /** VarietyOut */
+        VarietyOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Is Active */
+            is_active: boolean;
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta: string | null;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+        };
+        /** VarietyUpdate */
+        VarietyUpdate: {
+            /** Is Active */
+            is_active?: boolean | null;
+            /** Name */
+            name?: string | null;
+            /** Name Ta */
+            name_ta?: string | null;
+        };
+        /** VerticalCreate */
+        VerticalCreate: {
+            /** Default Modules */
+            default_modules?: components["schemas"]["ModuleKey"][];
+            /** Key */
+            key: string;
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta: string;
+            /** Reference Units */
+            reference_units?: string[];
+            /** Reference Varieties */
+            reference_varieties?: string[];
+            /** Workflow Highlights */
+            workflow_highlights?: components["schemas"]["WorkflowHighlight"][];
+            /** Workflow Steps */
+            workflow_steps?: components["schemas"]["WorkflowStep"][];
+        };
+        /** VerticalOut */
+        VerticalOut: {
+            /** Default Modules */
+            default_modules: string[];
+            /** Key */
+            key: string;
+            /** Name */
+            name: string;
+            /** Name Ta */
+            name_ta: string;
+            /** Reference Units */
+            reference_units: string[];
+            /** Reference Varieties */
+            reference_varieties: string[];
+            /** Workflow Highlights */
+            workflow_highlights: components["schemas"]["WorkflowHighlight"][];
+            /** Workflow Steps */
+            workflow_steps: components["schemas"]["WorkflowStep"][];
+        };
+        /**
+         * VerticalUpdate
+         * @description Only the fields sent are changed. Existing businesses on this vertical are not touched.
+         */
+        VerticalUpdate: {
+            /** Default Modules */
+            default_modules?: components["schemas"]["ModuleKey"][] | null;
+            /** Name */
+            name?: string | null;
+            /** Name Ta */
+            name_ta?: string | null;
+            /** Reference Units */
+            reference_units?: string[] | null;
+            /** Reference Varieties */
+            reference_varieties?: string[] | null;
+            /** Workflow Highlights */
+            workflow_highlights?: components["schemas"]["WorkflowHighlight"][] | null;
+            /** Workflow Steps */
+            workflow_steps?: components["schemas"]["WorkflowStep"][] | null;
+        };
+        /** VoidIn */
+        VoidIn: {
+            /** Reason */
+            reason: string;
+        };
+        /** WastageIn */
+        WastageIn: {
+            /** Grade Id */
+            grade_id?: string | null;
+            /**
+             * Location Id
+             * Format: uuid
+             */
+            location_id: string;
+            /** Note */
+            note?: string | null;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Quantity */
+            quantity: number;
+            /**
+             * Reason Code
+             * @enum {string}
+             */
+            reason_code: "rotten" | "damaged" | "shrinkage" | "spoiled_in_transit" | "other";
+            /** Variety Id */
+            variety_id?: string | null;
+        };
+        /** WastageOut */
+        WastageOut: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Created By
+             * Format: uuid
+             */
+            created_by: string;
+            /** Grade Id */
+            grade_id: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Location Id
+             * Format: uuid
+             */
+            location_id: string;
+            /**
+             * Movement Id
+             * Format: uuid
+             */
+            movement_id: string;
+            /** Note */
+            note: string | null;
+            /**
+             * Product Id
+             * Format: uuid
+             */
+            product_id: string;
+            /** Quantity */
+            quantity: number;
+            /**
+             * Reason Code
+             * @enum {string}
+             */
+            reason_code: "rotten" | "damaged" | "shrinkage" | "spoiled_in_transit" | "other";
+            /** Reversed */
+            reversed: boolean;
+            /** Variety Id */
+            variety_id: string | null;
+        };
+        /** WastageReportOut */
+        WastageReportOut: {
+            /**
+             * Date From
+             * Format: date
+             */
+            date_from: string;
+            /**
+             * Date To
+             * Format: date
+             */
+            date_to: string;
+            /** Rows */
+            rows: components["schemas"]["WastageRow"][];
+        };
+        /** WastageRow */
+        WastageRow: {
+            /** Product Id */
+            product_id: string;
+            /** Quantity Base */
+            quantity_base: number;
+            /** Reason Code */
+            reason_code: string;
+        };
+        /** WorkflowHighlight */
+        WorkflowHighlight: {
+            /** Description */
+            description: string;
+            /** Title */
+            title: string;
+        };
+        /** WorkflowStep */
+        WorkflowStep: {
+            /** Step */
+            step: number;
+            /** Title */
+            title: string;
         };
         /**
          * WorkspaceContextOut
@@ -487,7 +3606,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BusinessOut"][];
+                    "application/json": components["schemas"]["AdminBusinessOut"][];
                 };
             };
             /** @description Validation Error */
@@ -536,6 +3655,175 @@ export interface operations {
             };
         };
     };
+    get_business_api_admin_businesses__business_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                business_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminBusinessOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_business_api_admin_businesses__business_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                business_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BusinessUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BusinessOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    complete_setup_api_admin_businesses__business_id__complete_setup_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                business_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BusinessOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_list_locations_api_admin_businesses__business_id__locations_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                business_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LocationOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_members_api_admin_businesses__business_id__members_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                business_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     upsert_member_api_admin_businesses__business_id__members_put: {
         parameters: {
             query?: never;
@@ -560,6 +3848,553 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["MemberOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_member_api_admin_businesses__business_id__members__membership_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                business_id: string;
+                membership_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StaffUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_subscription_api_admin_businesses__business_id__subscription_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                business_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubscriptionOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_subscription_api_admin_businesses__business_id__subscription_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                business_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SubscriptionUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubscriptionOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_plans_api_admin_plans_get: {
+        parameters: {
+            query?: {
+                include_inactive?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_plan_api_admin_plans_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlanCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_plan_api_admin_plans__key__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlanUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_platform_settings_api_admin_settings_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlatformSettingsOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_platform_settings_api_admin_settings_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlatformSettingsUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlatformSettingsOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    setup_queue_api_admin_setup_queue_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BusinessOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_subscriptions_api_admin_subscriptions_get: {
+        parameters: {
+            query?: {
+                status?: ("trial" | "active" | "past_due" | "cancelled") | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubscriptionWithBusinessOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    subscription_stats_api_admin_subscriptions_stats_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SubscriptionStatsOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_platform_users_api_admin_users_get: {
+        parameters: {
+            query?: {
+                q?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlatformUserOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_platform_user_api_admin_users__user_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlatformUserUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlatformUserOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_verticals_api_admin_verticals_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerticalOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_vertical_api_admin_verticals_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerticalCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerticalOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_vertical_api_admin_verticals__key__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerticalUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerticalOut"];
                 };
             };
             /** @description Validation Error */
@@ -739,6 +4574,11 @@ export interface operations {
             query?: {
                 before_seq?: number | null;
                 limit?: number;
+                action?: string | null;
+                actor_user_id?: string | null;
+                entity_type?: string | null;
+                date_from?: string | null;
+                date_to?: string | null;
             };
             header?: never;
             path?: never;
@@ -755,6 +4595,262 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AuditPage"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_bills_api_w_bills_get: {
+        parameters: {
+            query?: {
+                q?: string | null;
+                date_from?: string | null;
+                date_to?: string | null;
+                party_id?: string | null;
+                status?: string | null;
+                before_id?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BillSummaryOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_sale_api_w_bills_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SaleIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BillOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_bill_api_w_bills__bill_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                bill_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BillOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    bill_pdf_api_w_bills__bill_id__pdf_get: {
+        parameters: {
+            query?: {
+                format?: "a4" | "thermal";
+                lang?: "en" | "ta";
+            };
+            header?: never;
+            path: {
+                bill_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_returns_api_w_bills__bill_id__returns_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                bill_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReturnOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_return_api_w_bills__bill_id__returns_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                bill_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReturnIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReturnOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    void_bill_api_w_bills__bill_id__void_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                bill_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VoidIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BillOut"];
                 };
             };
             /** @description Validation Error */
@@ -786,6 +4882,507 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["WorkspaceContextOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    crate_balances_api_w_crates_balances_get: {
+        parameters: {
+            query?: {
+                all_parties?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CrateBalanceOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    record_crates_api_w_crates_entries_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CrateEntryIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CrateLedgerEntryOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_parties_api_w_customers_get: {
+        parameters: {
+            query?: {
+                q?: string | null;
+                include_inactive?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PartyOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_party_api_w_customers_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PartyCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PartyOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_party_api_w_customers__party_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                party_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PartyOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_party_api_w_customers__party_id__patch: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                party_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PartyUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PartyOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    adjust_balance_api_w_customers__party_id__adjustments_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                party_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PartyAdjustmentIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PartyLedgerEntryOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    adjust_crates_api_w_customers__party_id__crate_adjustments_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                party_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CrateAdjustmentIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CrateLedgerEntryOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    party_crates_api_w_customers__party_id__crates_get: {
+        parameters: {
+            query?: {
+                before_id?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                party_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CrateLedgerEntryOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    party_ledger_api_w_customers__party_id__ledger_get: {
+        parameters: {
+            query?: {
+                before_id?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                party_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PartyLedgerEntryOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_grades_api_w_grades_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GradeOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_grade_api_w_grades_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GradeCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GradeOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_grade_api_w_grades__grade_id__patch: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                grade_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GradeUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GradeOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    home_api_w_home_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HomeOut"];
                 };
             };
             /** @description Validation Error */
@@ -926,6 +5523,1485 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LocationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_payments_api_w_money_payments_get: {
+        parameters: {
+            query?: {
+                party_id?: string | null;
+                before_id?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_payment_api_w_money_payments_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PaymentIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reverse_payment_api_w_money_payments__payment_id__reverse_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                payment_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReverseIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_products_api_w_products_get: {
+        parameters: {
+            query?: {
+                include_inactive?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProductOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_product_api_w_products_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProductCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProductOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_product_api_w_products__product_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                product_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProductOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_product_api_w_products__product_id__patch: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                product_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProductUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProductOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_variety_api_w_products__product_id__varieties_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                product_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VarietyCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VarietyOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_variety_api_w_products__product_id__varieties__variety_id__patch: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                product_id: string;
+                variety_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VarietyUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VarietyOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_purchases_api_w_purchases_get: {
+        parameters: {
+            query?: {
+                q?: string | null;
+                date_from?: string | null;
+                date_to?: string | null;
+                supplier_id?: string | null;
+                before_id?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PurchaseSummaryOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_purchase_api_w_purchases_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PurchaseIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PurchaseOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_purchase_api_w_purchases__purchase_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                purchase_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PurchaseOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    void_purchase_api_w_purchases__purchase_id__void_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                purchase_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VoidIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PurchaseOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    day_book_api_w_reports_daybook_get: {
+        parameters: {
+            query?: {
+                date?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DayBookOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    gst_report_api_w_reports_gst_get: {
+        parameters: {
+            query: {
+                from: string;
+                to: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GstReportOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    outstanding_report_api_w_reports_outstanding_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OutstandingOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    sales_report_api_w_reports_sales_get: {
+        parameters: {
+            query: {
+                from: string;
+                to: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SalesReportOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    wastage_report_api_w_reports_wastage_get: {
+        parameters: {
+            query: {
+                from: string;
+                to: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WastageReportOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_staff_api_w_staff_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_staff_api_w_staff_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MemberIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_staff_api_w_staff__membership_id__patch: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                membership_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StaffUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StaffOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    adjust_stock_api_w_stock_adjustments_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StockAdjustmentIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StockMovementOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    stock_balances_api_w_stock_balances_get: {
+        parameters: {
+            query?: {
+                location_id?: string | null;
+                product_id?: string | null;
+                include_zero?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StockBalanceOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_movements_api_w_stock_movements_get: {
+        parameters: {
+            query?: {
+                location_id?: string | null;
+                product_id?: string | null;
+                before_id?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StockMovementOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reverse_movement_api_w_stock_movements__movement_id__reverse_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                movement_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReverseIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StockMovementOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    record_opening_api_w_stock_opening_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OpeningStockIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StockMovementOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_transfers_api_w_stock_transfers_get: {
+        parameters: {
+            query?: {
+                before_id?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransferOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    transfer_stock_api_w_stock_transfers_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TransferIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransferOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_wastage_api_w_stock_wastage_get: {
+        parameters: {
+            query?: {
+                location_id?: string | null;
+                before_id?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WastageOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    record_wastage_api_w_stock_wastage_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WastageIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WastageOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_parties_api_w_suppliers_get: {
+        parameters: {
+            query?: {
+                q?: string | null;
+                include_inactive?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PartyOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_party_api_w_suppliers_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PartyCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PartyOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_party_api_w_suppliers__party_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                party_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PartyOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_party_api_w_suppliers__party_id__patch: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                party_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PartyUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PartyOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    adjust_balance_api_w_suppliers__party_id__adjustments_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                party_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PartyAdjustmentIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PartyLedgerEntryOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    adjust_crates_api_w_suppliers__party_id__crate_adjustments_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                party_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CrateAdjustmentIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CrateLedgerEntryOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    party_crates_api_w_suppliers__party_id__crates_get: {
+        parameters: {
+            query?: {
+                before_id?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                party_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CrateLedgerEntryOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    party_ledger_api_w_suppliers__party_id__ledger_get: {
+        parameters: {
+            query?: {
+                before_id?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                party_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PartyLedgerEntryOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_units_api_w_units_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnitOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_unit_api_w_units_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UnitCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnitOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_unit_api_w_units__unit_id__patch: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                unit_id: string;
+            };
+            cookie?: {
+                cc_session?: string | null;
+            };
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UnitUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnitOut"];
                 };
             };
             /** @description Validation Error */

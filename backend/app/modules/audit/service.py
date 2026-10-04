@@ -1,6 +1,7 @@
 """'Who did what'. Every create, update, cancel, login and support access writes one event."""
 
 import uuid
+from datetime import datetime
 from typing import Any
 
 from pydantic import BaseModel
@@ -72,7 +73,17 @@ async def record(
     )
 
 
-async def list_events(ctx: Ctx, *, before_seq: int | None, limit: int) -> list[AuditEvent]:
+async def list_events(
+    ctx: Ctx,
+    *,
+    before_seq: int | None,
+    limit: int,
+    action: str | None = None,
+    actor_user_id: uuid.UUID | None = None,
+    entity_type: str | None = None,
+    date_from: datetime | None = None,
+    date_to: datetime | None = None,
+) -> list[AuditEvent]:
     """Newest first, keyset-paginated by ``seq`` (cheap at any depth, unlike OFFSET)."""
     stmt = (
         select(AuditEvent)
@@ -82,4 +93,15 @@ async def list_events(ctx: Ctx, *, before_seq: int | None, limit: int) -> list[A
     )
     if before_seq is not None:
         stmt = stmt.where(AuditEvent.seq < before_seq)
+    if action:
+        # "stock" matches "stock.transfer"; a full name matches exactly
+        stmt = stmt.where((AuditEvent.action == action) | AuditEvent.action.startswith(f"{action}."))
+    if actor_user_id is not None:
+        stmt = stmt.where(AuditEvent.actor_user_id == actor_user_id)
+    if entity_type:
+        stmt = stmt.where(AuditEvent.entity_type == entity_type)
+    if date_from is not None:
+        stmt = stmt.where(AuditEvent.created_at >= date_from)
+    if date_to is not None:
+        stmt = stmt.where(AuditEvent.created_at < date_to)
     return list(await ctx.db.scalars(stmt))
