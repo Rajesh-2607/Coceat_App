@@ -6,7 +6,7 @@ services:
     name: cocreat
     runtime: docker
     dockerfilePath: ./Dockerfile
-    region: singapore            # closest to Neon's Singapore region
+    region: ohio                 # same region as the Neon database (AWS US East 2)
     plan: free
     healthCheckPath: /healthz
     autoDeployTrigger: checksPass  # deploy main only after GitHub Actions CI passes
