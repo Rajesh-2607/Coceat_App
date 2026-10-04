@@ -19,6 +19,7 @@ import sys
 
 from sqlalchemy import select
 
+from app import models  # noqa: F401  (every table must be registered before the audit foreign keys resolve)
 from app.core.context import RequestMeta
 from app.core.db import get_sessionmaker
 from app.core.security import hash_password, normalize_indian_mobile
