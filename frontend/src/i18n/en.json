@@ -624,10 +624,6 @@
   "errors": {
     "unknown": "Something went wrong. Please try again.",
     "validation": "Please check the details entered.",
-    "invalid_phone": "Enter a valid 10-digit mobile number.",
-    "otp_invalid": "Wrong or expired OTP.",
-    "otp_locked": "Too many wrong attempts. Request a new OTP.",
-    "otp_rate_limited": "Too many OTP requests. Please wait a few minutes.",
     "not_a_member": "You are not a member of this business.",
     "no_current_business": "Choose a business first.",
     "permission_denied": "You don't have permission to do this.",
@@ -669,7 +665,13 @@
     "walk_in_needs_full_refund": "A walk-in customer must be refunded in full.",
     "future_date": "The date cannot be in the future.",
     "payment_belongs_to_document": "This payment belongs to a bill or purchase. Cancel that instead.",
-    "bad_range": "Choose a date range of at most a year."
+    "bad_range": "Choose a date range of at most a year.",
+    "invalid_credentials": "Wrong username or password.",
+    "account_locked": "Too many wrong attempts. Try again in 15 minutes.",
+    "wrong_current_password": "Your current password is wrong.",
+    "username_taken": "That username is already taken.",
+    "account_in_use": "This person already has a login elsewhere. Ask them to use it.",
+    "invalid_phone": "Enter a valid 10-digit mobile number."
   },
   "bill": {
     "taxable": "Taxable value",
