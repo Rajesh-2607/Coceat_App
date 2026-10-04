@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     db_max_overflow: int = 5
     cors_origins: list[str] = ["http://localhost:5173"]
     cookie_domain: str | None = None
+    # Built frontend served by the API itself (single-origin hosting). Unset in local development.
+    frontend_dir: str | None = None
     session_ttl_days: int = 30
     # Proxies in front of the API that append to X-Forwarded-For (Render: 1). The client IP is taken that many
     # entries from the RIGHT, so a client-supplied X-Forwarded-For can't spoof it. 0 = socket peer address.
